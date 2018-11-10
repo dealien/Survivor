@@ -1,7 +1,17 @@
+import logging
 import random
 import time
 
-from logger import log
+import coloredlogs
+
+log = logging.getLogger(__name__)
+coloredlogs.install(level='DEBUG', fmt='%(asctime)s.%(msecs)03d %(name)s[%(process)d] %(levelname)s %(message)s')
+
+# Add handler for file output
+fh = logging.FileHandler('main.log')
+formatter = logging.Formatter('%(asctime)s.%(msecs)03d %(name)s[%(process)d] %(levelname)s %(message)s')
+fh.setFormatter(formatter)
+log.addHandler(fh)
 
 
 def generate(width, height, smoothness, values):

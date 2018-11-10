@@ -1,11 +1,25 @@
+import logging
 import os
 
+import coloredlogs
 import pygame
 
 import mapgen
 import settings
-from logger import log
 from mapgen.map import Map
+
+if os.path.exists("main.log"):
+    os.remove("main.log")
+
+# from logger import log
+log = logging.getLogger(__name__)
+coloredlogs.install(level='DEBUG', fmt='%(asctime)s.%(msecs)03d %(name)s[%(process)d] %(levelname)s %(message)s')
+
+# Add handler for file output
+fh = logging.FileHandler('main.log')
+formatter = logging.Formatter('%(asctime)s.%(msecs)03d %(name)s[%(process)d] %(levelname)s %(message)s')
+fh.setFormatter(formatter)
+log.addHandler(fh)
 
 new_map = Map(settings.MAP_HEIGHT, settings.MAP_WIDTH, settings.MAP_SMOOTHNESS)
 mapgen.display_terrain(new_map.terrain)
