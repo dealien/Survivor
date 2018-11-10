@@ -1,19 +1,12 @@
-import logging
 import os
 
-import coloredlogs
 import pygame
 
-log = logging.getLogger(__name__)
-coloredlogs.install(level='DEBUG', fmt='%(asctime)s.%(msecs)03d %(name)s[%(process)d] %(levelname)s %(message)s')
+import mylogger
 
-# Add handler for file output
-fh = logging.FileHandler('main.log')
-formatter = logging.Formatter('%(asctime)s.%(msecs)03d %(name)s[%(process)d] %(levelname)s %(message)s')
-fh.setFormatter(formatter)
-log.addHandler(fh)
+logger = mylogger.setup_custom_logger('root')
 
-log.debug('settings.py loaded')
+logger.debug('settings.py loaded')
 
 if os.name == 'posix':
     # Linux
@@ -25,41 +18,41 @@ else:
 ADIR = os.path.join(ROOTDIR, 'assets')
 IMGDIR = os.path.join(ADIR, 'images')
 AUDDIR = os.path.join(ADIR, 'sound')
-log.debug(f'ROOTDIR = {ROOTDIR}')
-log.debug(f'ADIR = {ADIR}')
-log.debug(f'IMGDIR = {IMGDIR}')
-log.debug(f'AUDDIR = {AUDDIR}')
+logger.debug(f'ROOTDIR = {ROOTDIR}')
+logger.debug(f'ADIR = {ADIR}')
+logger.debug(f'IMGDIR = {IMGDIR}')
+logger.debug(f'AUDDIR = {AUDDIR}')
 
 # Game Window variables
 WINDOW_WIDTH = 1056
 WINDOW_HEIGHT = 616
-log.debug(f'WINDOW_WIDTH = {WINDOW_WIDTH}')
-log.debug(f'WINDOW_HEIGHT = {WINDOW_HEIGHT}')
+logger.debug(f'WINDOW_WIDTH = {WINDOW_WIDTH}')
+logger.debug(f'WINDOW_HEIGHT = {WINDOW_HEIGHT}')
 
 # Mapgen settings
 MAP_HEIGHT = 500
 MAP_WIDTH = 500
 MAP_SMOOTHNESS = 10
-log.debug(f'MAP_HEIGHT = {MAP_HEIGHT}')
-log.debug(f'MAP_HEIGHT = {MAP_HEIGHT}')
+logger.debug(f'MAP_HEIGHT = {MAP_HEIGHT}')
+logger.debug(f'MAP_HEIGHT = {MAP_HEIGHT}')
 
 # Image Variables
 IMGSIZE = 16
-log.debug(f'IMGSIZE = {IMGSIZE}')
+logger.debug(f'IMGSIZE = {IMGSIZE}')
 
 # Surface
 windowSurface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), 0, 32)
 
 # colors
-log.debug('Loading colors...')
+logger.debug('Loading colors...')
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 DARKWALL = (0, 0, 100)
 DARKFLOOR = (50, 50, 150)
-log.debug(f'Colors loaded')
+logger.debug(f'Colors loaded')
 
 # Images
-log.debug('Loading images...')
+logger.debug('Loading images...')
 grass_image = pygame.image.load(os.path.join(IMGDIR, 'grass.bmp')).convert_alpha()
 dirt_image = pygame.image.load(os.path.join(IMGDIR, 'dirt.bmp')).convert_alpha()
 stone_image = pygame.image.load(os.path.join(IMGDIR, 'stone.bmp')).convert_alpha()
@@ -70,6 +63,6 @@ images = {
     'stone': stone_image,
     'water': water_image
 }
-log.debug('Images loaded')
-log.debug(f'images = {str(images)}')
-log.debug('Settings loaded successfully')
+logger.debug('Images loaded')
+logger.debug(f'images = {str(images)}')
+logger.debug('Settings loaded successfully')

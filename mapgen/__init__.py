@@ -1,17 +1,9 @@
-import logging
 import random
 import time
 
-import coloredlogs
+import mylogger
 
-log = logging.getLogger(__name__)
-coloredlogs.install(level='DEBUG', fmt='%(asctime)s.%(msecs)03d %(name)s[%(process)d] %(levelname)s %(message)s')
-
-# Add handler for file output
-fh = logging.FileHandler('main.log')
-formatter = logging.Formatter('%(asctime)s.%(msecs)03d %(name)s[%(process)d] %(levelname)s %(message)s')
-fh.setFormatter(formatter)
-log.addHandler(fh)
+logger = mylogger.setup_custom_logger('root')
 
 
 def generate(width, height, smoothness, values):
@@ -59,7 +51,7 @@ def generate(width, height, smoothness, values):
         ValueError: Mapgen terrains must be at least 3x3
             (Attempted: (dimensions attempted)).
     """
-    log.debug('Generating map...')
+    logger.debug('Generating map...')
     mapgen_start = time.perf_counter()
     # Check to see that the width and height are each at least three
     # If the width or height is less than three...
@@ -78,7 +70,7 @@ def generate(width, height, smoothness, values):
         _smooth(terrain, values)
 
     mapgen_end = time.perf_counter()
-    log.debug(f'Map generated in {mapgen_end-mapgen_start} seconds')
+    logger.debug(f'Map generated in {mapgen_end-mapgen_start} seconds')
     # Return the terrain
     return terrain
 

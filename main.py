@@ -1,25 +1,15 @@
-import logging
 import os
 
-import coloredlogs
 import pygame
 
 import mapgen
+import mylogger
 import settings
 from mapgen.map import Map
 
-if os.path.exists("main.log"):
-    os.remove("main.log")
+open('main.log', 'w').close()
 
-# from logger import log
-log = logging.getLogger(__name__)
-coloredlogs.install(level='DEBUG', fmt='%(asctime)s.%(msecs)03d %(name)s[%(process)d] %(levelname)s %(message)s')
-
-# Add handler for file output
-fh = logging.FileHandler('main.log')
-formatter = logging.Formatter('%(asctime)s.%(msecs)03d %(name)s[%(process)d] %(levelname)s %(message)s')
-fh.setFormatter(formatter)
-log.addHandler(fh)
+logger = mylogger.setup_custom_logger('root')
 
 new_map = Map(settings.MAP_HEIGHT, settings.MAP_WIDTH, settings.MAP_SMOOTHNESS)
 mapgen.display_terrain(new_map.terrain)
@@ -42,7 +32,7 @@ class Game:
         self.game_over = False
 
         # Sounds
-        log.debug('Loading sounds...')
+        logger.debug('Loading sounds...')
         self.sound_mob_hit_player = pygame.mixer.Sound(os.path.join(settings.AUDDIR, 'mobHitPlayer.wav'))
         self.sound_add_remove_walls = pygame.mixer.Sound(os.path.join(settings.AUDDIR, 'add_remove_walls.wav'))
         self.sound_bomb = pygame.mixer.Sound(os.path.join(settings.AUDDIR, 'bomb.wav'))
@@ -54,4 +44,4 @@ class Game:
         self.current_volume = 1.0
         self.music_paused = False
         pygame.mixer.music.set_volume(self.current_volume)
-        log.debug('Sounds loaded')
+        logger.debug('Sounds loaded')

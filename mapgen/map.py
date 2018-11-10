@@ -1,18 +1,8 @@
-import logging
-
-import coloredlogs
-
 import mapgen
 
-# from logger import log
-log = logging.getLogger(__name__)
-coloredlogs.install(level='DEBUG', fmt='%(asctime)s.%(msecs)03d %(name)s[%(process)d] %(levelname)s %(message)s')
+import mylogger
 
-# Add handler for file output
-fh = logging.FileHandler('main.log')
-formatter = logging.Formatter('%(asctime)s.%(msecs)03d %(name)s[%(process)d] %(levelname)s %(message)s')
-fh.setFormatter(formatter)
-log.addHandler(fh)
+logger = mylogger.setup_custom_logger('root')
 
 
 class Map():
@@ -29,7 +19,7 @@ class Map():
                                            "+": 0.55,
                                            "%": 0.25
                                        })
-        log.debug('Map generated (height=%d, width=%d, smoothness=%d)' % (self.height, self.width, self.smoothness))
+        logger.debug('Map generated (height=%d, width=%d, smoothness=%d)' % (self.height, self.width, self.smoothness))
 
     def __repr__(self):
         return self.terrain
