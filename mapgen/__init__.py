@@ -1,4 +1,7 @@
 import random
+import time
+
+from logger import log
 
 
 def generate(width, height, smoothness, values):
@@ -46,6 +49,8 @@ def generate(width, height, smoothness, values):
         ValueError: Mapgen terrains must be at least 3x3
             (Attempted: (dimensions attempted)).
     """
+    log.debug('Generating map...')
+    mapgen_start = time.perf_counter()
     # Check to see that the width and height are each at least three
     # If the width or height is less than three...
     if width < 3 or height < 3:
@@ -62,6 +67,8 @@ def generate(width, height, smoothness, values):
     for i in range(smoothness):
         _smooth(terrain, values)
 
+    mapgen_end = time.perf_counter()
+    log.debug(f'Map generated in {mapgen_end-mapgen_start} seconds')
     # Return the terrain
     return terrain
 

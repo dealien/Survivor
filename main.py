@@ -1,20 +1,13 @@
-import logging
 import os
 
-import coloredlogs
 import pygame
 
-import settings
 import mapgen
+import settings
+from logger import log
 from mapgen.map import Map
 
-
-
-
-logger = logging.getLogger(__name__)
-coloredlogs.install(level='DEBUG', fmt='%(asctime)s.%(msecs)03d %(name)s[%(process)d] %(levelname)s %(message)s')
-
-new_map = Map(200, 200, 5)
+new_map = Map(settings.MAP_HEIGHT, settings.MAP_WIDTH, settings.MAP_SMOOTHNESS)
 mapgen.display_terrain(new_map.terrain)
 
 
@@ -29,20 +22,22 @@ class Game:
         pygame.display.set_caption('Survivor')
         # self.player = Player(os.path.join(settings.IMGDIR, 'player.bmp'), 0, 0)
         self.map = new_map
-        # self.font = pygame.font.Font(os.path.join(settings.RESDIR, 'visitor1.ttf'), 18)
-        # self.title_font = pygame.font.Font(os.path.join(settings.RESDIR, 'visitor1.ttf'), 36)
+        # self.font = pygame.font.Font(os.path.join(settings.AUDDIR, 'visitor1.ttf'), 18)
+        # self.title_font = pygame.font.Font(os.path.join(settings.AUDDIR, 'visitor1.ttf'), 36)
         self.paused = False
         self.game_over = False
 
         # Sounds
-        self.mob_hit_player = pygame.mixer.Sound(os.path.join(settings.RESDIR, 'mobHitPlayer.wav'))
-        self.add_remove_walls = pygame.mixer.Sound(os.path.join(settings.RESDIR, 'add_remove_walls.wav'))
-        self.bomb = pygame.mixer.Sound(os.path.join(settings.RESDIR, 'bomb.wav'))
-        self.gold = pygame.mixer.Sound(os.path.join(settings.RESDIR, 'gold.wav'))
-        self.hit_wall = pygame.mixer.Sound(os.path.join(settings.RESDIR, 'hit_wall.wav'))
-        self.lava = pygame.mixer.Sound(os.path.join(settings.RESDIR, 'lava.wav'))
-        self.whip_breakable = pygame.mixer.Sound(os.path.join(settings.RESDIR, 'whip_breakable.wav'))
-        self.whipping = pygame.mixer.Sound(os.path.join(settings.RESDIR, 'whipping.wav'))
-        self.currentVolume = 1.0
+        log.debug('Loading sounds...')
+        self.sound_mob_hit_player = pygame.mixer.Sound(os.path.join(settings.AUDDIR, 'mobHitPlayer.wav'))
+        self.sound_add_remove_walls = pygame.mixer.Sound(os.path.join(settings.AUDDIR, 'add_remove_walls.wav'))
+        self.sound_bomb = pygame.mixer.Sound(os.path.join(settings.AUDDIR, 'bomb.wav'))
+        self.sound_gold = pygame.mixer.Sound(os.path.join(settings.AUDDIR, 'gold.wav'))
+        self.sound_hit_wall = pygame.mixer.Sound(os.path.join(settings.AUDDIR, 'hit_wall.wav'))
+        self.sound_lava = pygame.mixer.Sound(os.path.join(settings.AUDDIR, 'lava.wav'))
+        self.sound_whip_breakable = pygame.mixer.Sound(os.path.join(settings.AUDDIR, 'whip_breakable.wav'))
+        self.sound_whipping = pygame.mixer.Sound(os.path.join(settings.AUDDIR, 'whipping.wav'))
+        self.current_volume = 1.0
         self.music_paused = False
-        pygame.mixer.music.set_volume(self.currentVolume)
+        pygame.mixer.music.set_volume(self.current_volume)
+        log.debug('Sounds loaded')
