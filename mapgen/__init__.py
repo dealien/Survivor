@@ -6,7 +6,7 @@ import mylogger
 logger = mylogger.setup_custom_logger('root')
 
 
-def generate(width, height, smoothness, values):
+def generate_terrain(width, height, smoothness, values):
     """Generates and returns a new procedurally-generated terrain
 
     Generates and returns a two-dimensional list with the
@@ -29,7 +29,7 @@ def generate(width, height, smoothness, values):
         A two-dimensional list with the values spread in a
         terrain-like fashion. For example, running this code:
 
-        > terrain = mapgen.generate(10, 10, 1, {"X": 0.2442,
+        > terrain = mapgen.generate_terrain(10, 10, 1, {"X": 0.2442,
         >                                         "#": 0.2558,
         >                                         ".": 0.2442,
         >                                         " ": 0.2558})
@@ -51,8 +51,8 @@ def generate(width, height, smoothness, values):
         ValueError: Mapgen terrains must be at least 3x3
             (Attempted: (dimensions attempted)).
     """
-    logger.debug('Generating map...')
-    mapgen_start = time.perf_counter()
+    logger.debug('Generating terrain...')
+    terrain_start = time.perf_counter()
     # Check to see that the width and height are each at least three
     # If the width or height is less than three...
     if width < 3 or height < 3:
@@ -69,8 +69,8 @@ def generate(width, height, smoothness, values):
     for i in range(smoothness):
         _smooth(terrain, values)
 
-    mapgen_end = time.perf_counter()
-    logger.debug(f'Map generated in {mapgen_end-mapgen_start} seconds')
+    terrain_end = time.perf_counter()
+    logger.debug(f'Terrain generated in {terrain_end-terrain_start} seconds')
     # Return the terrain
     return terrain
 
@@ -328,3 +328,38 @@ def display_terrain(terrain):
             print(j, end="")
         # After each row is done printing, separate with a newline
         print()
+
+
+def generate_tilemap(terrain, key):
+    """Generates a 2D array of objects containing specific
+    information for each tile on the map. The function uses a key to
+    determine what symbols in the terrain map correspond with what
+    tiles.
+
+    Args:
+        terrain: The terrain to convert into a tilemap.
+        key: An object list showing the symbols in the terrain
+        map and their corresponding tiles.
+
+    Returns:
+        The completed tilemap.
+    """
+    logger.debug('Generating tilemap...')
+    tilemap_start = time.perf_counter()
+
+    # Create a blank slate to fill with terrain values
+    tilemap = _create_blank(len(terrain), len(terrain[0]))
+    # Iterate through every element in the terrain...
+    x = 0
+    y = 0
+    for i in terrain:
+        for j in i:
+            tilemap[x][y] = key[j]
+            y += 1
+        x += 1
+        y = 0
+
+    tilemap_end = time.perf_counter()
+    logger.debug(f'Tilemap generated in {tilemap_end - tilemap_start} seconds')
+    # Return the tilemap
+    return tilemap

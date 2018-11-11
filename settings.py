@@ -6,7 +6,7 @@ import mylogger
 
 logger = mylogger.setup_custom_logger('root')
 
-logger.debug('settings.py loaded')
+logger.debug('Loading settings...')
 
 if os.name == 'posix':
     # Linux
@@ -30,8 +30,8 @@ logger.debug(f'WINDOW_WIDTH = {WINDOW_WIDTH}')
 logger.debug(f'WINDOW_HEIGHT = {WINDOW_HEIGHT}')
 
 # Mapgen settings
-MAP_HEIGHT = 500
-MAP_WIDTH = 500
+MAP_HEIGHT = 50
+MAP_WIDTH = 50
 MAP_SMOOTHNESS = 10
 logger.debug(f'MAP_HEIGHT = {MAP_HEIGHT}')
 logger.debug(f'MAP_HEIGHT = {MAP_HEIGHT}')
@@ -49,20 +49,5 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 DARKWALL = (0, 0, 100)
 DARKFLOOR = (50, 50, 150)
-logger.debug(f'Colors loaded')
-
-# Images
-logger.debug('Loading images...')
-grass_image = pygame.image.load(os.path.join(IMGDIR, 'grass.bmp')).convert_alpha()
-dirt_image = pygame.image.load(os.path.join(IMGDIR, 'dirt.bmp')).convert_alpha()
-stone_image = pygame.image.load(os.path.join(IMGDIR, 'stone.bmp')).convert_alpha()
-water_image = pygame.image.load(os.path.join(IMGDIR, 'water_0.bmp')).convert_alpha()
-images = {
-    'grass': grass_image,
-    'dirt': dirt_image,
-    'stone': stone_image,
-    'water': water_image
-}
-logger.debug('Images loaded')
-logger.debug(f'images = {str(images)}')
+logger.debug('Colors loaded')
 logger.debug('Settings loaded successfully')
