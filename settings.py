@@ -1,10 +1,12 @@
 import os
+import pprint
 
 import pygame
 
 import mylogger
 
 logger = mylogger.setup_custom_logger('root')
+pp = pprint.PrettyPrinter(indent=4)
 
 logger.debug('Loading settings...')
 
@@ -43,11 +45,26 @@ logger.debug(f'IMGSIZE = {IMGSIZE}')
 # Surface
 windowSurface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), 0, 32)
 
-# colors
+# Colors
 logger.debug('Loading colors...')
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 DARKWALL = (0, 0, 100)
 DARKFLOOR = (50, 50, 150)
 logger.debug('Colors loaded')
+
+# Textures
+logger.debug('Loading textures...')
+textures = {}
+directory = os.fsencode(IMGDIR)
+for file in os.listdir(directory):
+    filename = os.fsdecode(file)
+    if filename.endswith(".bmp"):
+        textures[filename[:-4]] = pygame.image.load(os.path.join(IMGDIR, filename)).convert_alpha()
+        continue
+    else:
+        continue
+logger.debug('Textures loaded')
+logger.debug('texture = \n' + pp.pformat(textures))
+
 logger.debug('Settings loaded successfully')
