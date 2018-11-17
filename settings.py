@@ -59,12 +59,12 @@ textures = {}
 directory = os.fsencode(IMGDIR)
 for file in os.listdir(directory):
     filename = os.fsdecode(file)
-    if filename.endswith(".bmp"):
+    if filename.endswith('.bmp') or filename.endswith('.png'):
         textures[filename[:-4]] = pygame.image.load(os.path.join(IMGDIR, filename)).convert_alpha()
         continue
     else:
         continue
 logger.debug('Textures loaded')
-logger.debug('texture = \n' + pp.pformat(textures))
+logger.debug('textures = \n' + pp.pformat(textures))
 
 logger.debug('Settings loaded successfully')
