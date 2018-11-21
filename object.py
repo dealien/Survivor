@@ -10,8 +10,8 @@ class Object(pygame.sprite.Sprite):
         self.image = image
         self.image.set_colorkey(self.image.get_at((0, 0)))  # makes the border color transparent no matter what!
         self.rect = self.image.get_rect()
-        self.rect.top = y
-        self.rect.left = x
+        self.x = x
+        self.y = y
         self.kind = kind
 
     def draw(self, surface):
@@ -23,6 +23,22 @@ class Player(Object):
         Object.__init__(self, image, x, y)
         self.weapon = None
 
+    @property
+    def x(self):
+        return self.rect[0]
+
+    @x.setter
+    def x(self, val):
+        self.rect[0] = val
+
+    @property
+    def y(self):
+        return self.rect[1]
+
+    @y.setter
+    def y(self, val):
+        self.rect[1] = val
+
     def move(self, dx, dy, game):
         new_position = self.rect.move(dx, dy)
         old_position = self.rect
@@ -30,8 +46,9 @@ class Player(Object):
 
     def check_collision(self, game, old_position, new_position):
         # If something blocks the movement, the position returns unchanged, otherwise it returns the new position
-        if game.map.tilemap[int(new_position[0]/game.player.rect[2])][int(new_position[1]/game.player.rect[3])].collisions is False and \
-                -1< new_position[0] < game.player.rect[3] * game.map.width and \
+        if game.map.tilemap[int(new_position[0] / game.player.rect[2])][
+            int(new_position[1] / game.player.rect[3])].collisions is False and \
+                -1 < new_position[0] < game.player.rect[3] * game.map.width and \
                 -1 < new_position[1] < game.player.rect[3] * game.map.height:
             logger.debug(f'Player moved from {old_position} to {new_position}')
             position = new_position

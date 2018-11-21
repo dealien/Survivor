@@ -17,10 +17,12 @@ class Game:
     def __init__(self):
         self.clock = pygame.time.Clock()
         self.surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), 0, 32)
-        pygame.display.set_caption('Survivor')
+        pygame.display.set_caption('Survivor')  # Set window title
         self.player = Player(textures['player'], 0, 0)
+        # self.player = Player(textures['player'], (MAP_WIDTH / 2), (MAP_HEIGHT / 2))
         new_map = Map(MAP_HEIGHT, MAP_WIDTH, MAP_SMOOTHNESS)
         self.map = new_map
+        self.camera = Camera()
         # self.font = pygame.font.Font(os.path.join(AUDDIR, 'visitor1.ttf'), 18)
         # self.title_font = pygame.font.Font(os.path.join(AUDDIR, 'visitor1.ttf'), 36)
         self.paused = False
@@ -36,31 +38,44 @@ class Game:
         pygame.mixer.music.set_volume(self.current_volume)
 
 
-class Camera(object):
-    def __init__(self, width, height):
-        self.state = Rect(0, 0, width, height)
+class Camera(object):  # Offsets coordinates to allow display of objects relative to player position
+    def __init__(self):
+        self.x_shift = self.y_shift = None
 
-    def apply(self, target):
-        return target.rect.move(self.state.topleft)
+    def update(self):
+        self.x_shift = 0 - game.player.x
+        self.y_shift = 0 - game.player.y
 
-    def update(self, target):
-        self.state = self.camera_func(self.state, target.rect)
+    def apply(self, obj):
+        if type(obj) is tuple:
+            rx = obj[0] + self.x_shift + (WINDOW_WIDTH / 2)
+            ry = obj[1] + self.y_shift + (WINDOW_HEIGHT / 2)
+            # rx = obj[0] + self.x_shift
+            # ry = obj[1] + self.y_shift
+        elif type(obj) is object or Player:
+            rx = obj.x + self.x_shift + (WINDOW_WIDTH / 2)
+            ry = obj.y + self.y_shift + (WINDOW_HEIGHT / 2)
+            # rx = obj.x + self.x_shift
+            # ry = obj.y + self.y_shift
+        return rx, ry
 
 
 def render_all(game):
+    game.camera.update()
     game.surface.fill((0, 0, 0))
     for a in range(len(game.map.tilemap)):
         for b in range(len(game.map.tilemap[a])):
-            y = a * IMGSIZE  # This sets the x and y coordinates by the number of pixels the image is, 16 , 32 etc.
+            # Set the x and y coordinates by the number of pixels the image is, 16 , 32 etc.
+            y = a * IMGSIZE
             x = b * IMGSIZE
-            game.surface.blit(game.map.tilemap[a][b].texture, (x, y))
-    game.player.draw(game.surface)
+            # Draw from the perspective of the camera
+            game.surface.blit(game.map.tilemap[a][b].texture, game.camera.apply((x, y)))
+    game.surface.blit(textures['player'], game.camera.apply(game.player))  # Draw the player
     pygame.display.update()
 
 
 pygame.init()
 game = Game()
-camera = Camera(WINDOW_WIDTH, WINDOW_HEIGHT)
 while not game.game_over:
     for event in pygame.event.get():
         if event.type == KEYDOWN:
