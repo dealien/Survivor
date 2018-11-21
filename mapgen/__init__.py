@@ -87,7 +87,7 @@ def _create_blank(width, height):
         width: The width of the blank terrain to generate.
         height: The height of the blank terrain to generate.
     """
-    # Use a list comprehension to generate a blank of the given dimensions
+    # Use a list comprehension to generate a blank array of the given dimensions
     empty_terrain = [[None for i in range(width)] for j in range(height)]
 
     # Return the list

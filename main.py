@@ -18,8 +18,7 @@ class Game:
         self.clock = pygame.time.Clock()
         self.surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), 0, 32)
         pygame.display.set_caption('Survivor')  # Set window title
-        self.player = Player(textures['player'], 0, 0)
-        # self.player = Player(textures['player'], (MAP_WIDTH / 2), (MAP_HEIGHT / 2))
+        self.player = Player(textures['player'], (MAP_WIDTH / 2) * IMGSIZE, (MAP_HEIGHT / 2) * IMGSIZE)
         new_map = Map(MAP_HEIGHT, MAP_WIDTH, MAP_SMOOTHNESS)
         self.map = new_map
         self.camera = Camera()
