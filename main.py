@@ -49,13 +49,9 @@ class Camera(object):  # Offsets coordinates to allow display of objects relativ
         if type(obj) is tuple:
             rx = obj[0] + self.x_shift + (WINDOW_WIDTH / 2)
             ry = obj[1] + self.y_shift + (WINDOW_HEIGHT / 2)
-            # rx = obj[0] + self.x_shift
-            # ry = obj[1] + self.y_shift
         elif type(obj) is object or Player:
             rx = obj.x + self.x_shift + (WINDOW_WIDTH / 2)
             ry = obj.y + self.y_shift + (WINDOW_HEIGHT / 2)
-            # rx = obj.x + self.x_shift
-            # ry = obj.y + self.y_shift
         return rx, ry
 
 
@@ -79,13 +75,13 @@ while not game.game_over:
     for event in pygame.event.get():
         if event.type == KEYDOWN:
             if event.key == K_LEFT or event.key == K_KP4:
-                game.player.move(-IMGSIZE, 0, game)
+                game.player.move(270, game)
             if event.key == K_RIGHT or event.key == K_KP6:
-                game.player.move(IMGSIZE, 0, game)
+                game.player.move(90, game)
             if event.key == K_UP or event.key == K_KP8:
-                game.player.move(0, -IMGSIZE, game)
+                game.player.move(0, game)
             if event.key == K_DOWN or event.key == K_KP2:
-                game.player.move(0, IMGSIZE, game)
+                game.player.move(180, game)
 
     render_all(game)
     game.clock.tick(50)
