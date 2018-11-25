@@ -46,12 +46,16 @@ class Camera(object):  # Offsets coordinates to allow display of objects relativ
         self.y_shift = 0 - game.player.y
 
     def apply(self, obj):
-        if type(obj) is tuple:
+        if isinstance(obj,tuple):
             rx = obj[0] + self.x_shift + (WINDOW_WIDTH / 2)
             ry = obj[1] + self.y_shift + (WINDOW_HEIGHT / 2)
-        elif type(obj) is object or Player:
+        elif isinstance(obj,(object,Player)):
             rx = obj.x + self.x_shift + (WINDOW_WIDTH / 2)
             ry = obj.y + self.y_shift + (WINDOW_HEIGHT / 2)
+        else:
+            raise Exception(
+                f"Camera.apply() requires input to be of type tuple or Player(); "
+                f"got object of type {type(obj)} instead.")
         return rx, ry
 
 
