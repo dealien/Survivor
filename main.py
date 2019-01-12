@@ -46,10 +46,10 @@ class Camera(object):  # Offsets coordinates to allow display of objects relativ
         self.y_shift = 0 - game.player.y
 
     def apply(self, obj):
-        if isinstance(obj,tuple):
+        if isinstance(obj, tuple):
             rx = obj[0] + self.x_shift + (WINDOW_WIDTH / 2)
             ry = obj[1] + self.y_shift + (WINDOW_HEIGHT / 2)
-        elif isinstance(obj,(object,Player)):
+        elif isinstance(obj, (object, Player)):
             rx = obj.x + self.x_shift + (WINDOW_WIDTH / 2)
             ry = obj.y + self.y_shift + (WINDOW_HEIGHT / 2)
         else:
@@ -75,16 +75,20 @@ def render_all(game):
 
 pygame.init()
 game = Game()
+
+# Main game loop. Detect keyboard input for character movements, etc.
+# Controls:
+# - WASD or arrow keys to move
 while not game.game_over:
     for event in pygame.event.get():
         if event.type == KEYDOWN:
-            if event.key == K_LEFT or event.key == K_KP4:
+            if event.key == K_LEFT or event.key == K_a or event.key == K_KP4:
                 game.player.move(270, game)
-            if event.key == K_RIGHT or event.key == K_KP6:
+            if event.key == K_RIGHT or event.key == K_d or event.key == K_KP6:
                 game.player.move(90, game)
-            if event.key == K_UP or event.key == K_KP8:
+            if event.key == K_UP or event.key == K_w or event.key == K_KP8:
                 game.player.move(0, game)
-            if event.key == K_DOWN or event.key == K_KP2:
+            if event.key == K_DOWN or event.key == K_s or event.key == K_KP2:
                 game.player.move(180, game)
 
     render_all(game)
