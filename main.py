@@ -1,3 +1,5 @@
+import sys
+
 from pygame.locals import *
 
 from mapgen.map import Map
@@ -7,6 +9,14 @@ from object import *
 open('main.log', 'w').close()
 
 logger = mylogger.setup_custom_logger('root')
+
+testrun = False
+for i in sys.argv:
+    if "--test-run" in i:
+        testrun = True
+        logger.debug("Beginning test run...")
+        os.environ["SDL_VIDEODRIVER"] = "dummy"
+        logger.debug(f"SDL_VIDEODRIVER = {os.environ.get('SDL_VIDEODRIVER')}")
 
 
 class Game:
@@ -69,27 +79,37 @@ def render_all(game):
             x = b * IMGSIZE
             # Draw from the perspective of the camera
             game.surface.blit(game.map.tilemap[a][b].texture, game.camera.apply((x, y)))
-    game.surface.blit(textures['player'], game.camera.apply(game.player))  # Draw the player
+    # game.surface.blit(textures['player'], game.camera.apply(game.player))  # Draw the player
+    game.surface.blit(game.player.image, game.camera.apply(game.player))  # Draw the player
     pygame.display.update()
 
 
 pygame.init()
 game = Game()
 
+# When the script is run using the "--test-run" argument, test actions used in the main loop, then exit.
+if testrun:
+    game.player.move(270, game)
+    game.player.move(90, game)
+    game.player.move(0, game)
+    game.player.move(180, game)
+    # Exit after testing before the main loop
+    sys.exit()
+
 # Main game loop. Detect keyboard input for character movements, etc.
 # Controls:
 # - WASD or arrow keys to move
 while not game.game_over:
-    for event in pygame.event.get():
+    events = pygame.event.get()
+    for event in events:
         if event.type == KEYDOWN:
             if event.key == K_LEFT or event.key == K_a or event.key == K_KP4:
-                game.player.move(270, game)
-            if event.key == K_RIGHT or event.key == K_d or event.key == K_KP6:
                 game.player.move(90, game)
+            if event.key == K_RIGHT or event.key == K_d or event.key == K_KP6:
+                game.player.move(270, game)
             if event.key == K_UP or event.key == K_w or event.key == K_KP8:
                 game.player.move(0, game)
             if event.key == K_DOWN or event.key == K_s or event.key == K_KP2:
                 game.player.move(180, game)
-
     render_all(game)
     game.clock.tick(50)

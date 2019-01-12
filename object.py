@@ -5,21 +5,26 @@ class Object(pygame.sprite.Sprite):
     # This is a generic object: player, monster, chest, stairs etc.
     def __init__(self, image, x, y):
         pygame.sprite.Sprite.__init__(self)
-        self.image = image
-        self.image.set_colorkey(self.image.get_at((0, 0)))  # Makes the border color transparent no matter what!
+        self.base_image = image
+        # Make the border color transparent no matter what!
+        self.base_image.set_colorkey(self.base_image.get_at((0, 0)))
+        self.image = self.base_image
         self.rect = self.image.get_rect()
         self.x = x
         self.y = y
+        self.dir = Direction(0)
 
     def draw(self, surface):
-        surface.blit(self.image, self.rect)
+        image = pygame.transform.rotate(self.base_image, self.dir)
+        rect = image.get_rect()
+        surface.blit(image, rect)
 
 
 class Player(Object):
     def __init__(self, image, x, y):
         Object.__init__(self, image, x, y)
         self.weapon = None
-        self.dir = Direction(0)
+        self.image = self.base_image
 
     @property
     def x(self):
@@ -38,14 +43,17 @@ class Player(Object):
         self.rect[1] = val
 
     def move(self, d, game):
-        dirs = {'0': (0, -IMGSIZE),  # North
-                '90': (IMGSIZE, 0),  # East
-                '180': (0, IMGSIZE),  # South
-                '270': (-IMGSIZE, 0)}  # West
+        dirs = {
+            '0': (0, -IMGSIZE),  # North
+            '90': (-IMGSIZE, 0),  # West
+            '180': (0, IMGSIZE),  # South
+            '270': (IMGSIZE, 0)  # East
+        }
         dx, dy = dirs[str(d)]
         new_position = self.rect.move(dx, dy)
         old_position = self.rect
         self.turnto(d)
+        self.image = pygame.transform.rotate(self.base_image, d)
         self.rect = self.check_collision(game, old_position, new_position)
 
     def turnto(self, d):
