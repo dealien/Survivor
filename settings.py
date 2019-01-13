@@ -25,7 +25,12 @@ logger.debug(f'ADIR = {ADIR}')
 logger.debug(f'IMGDIR = {IMGDIR}')
 logger.debug(f'AUDDIR = {AUDDIR}')
 
-
+# Constants
+#Directions
+NORTH='NORTH'
+WEST='WEST'
+SOUTH='SOUTH'
+EAST='EAST'
 
 # Game Window variables
 WINDOW_WIDTH = 1056

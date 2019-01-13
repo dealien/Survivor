@@ -56,43 +56,59 @@ class Player(Object):
         self.turnto(d)
         self.image = pygame.transform.rotate(self.base_image, d)
         self.rect = self.check_collision(game, old_position, new_position)
-
+        if self.rect is new_position:
+            debug_text=(
+                f'Player moved from ({old_position[0]}, {old_position[1]}) to ({new_position[0]}, {new_position[1]})')
+        else:
+            debug_text=(
+                f'Movement blocked from ({old_position[0]}, {old_position[1]})'
+                f' to ({new_position[0]}, {new_position[1]})')
+        logger.debug(f'{debug_text}, now facing {str(self.dir)} ({repr(self.dir)})')
     def turnto(self, d):
         self.dir = Direction(d)
 
     def check_collision(self, game, old_position, new_position):
-        # If something blocks the movement, the position returns unchanged, otherwise it returns the new position
+        """
+        Ensures that a given movement is posssible and that nothing is in the way.
+        :param game:
+        The main game object
+        :param old_position:
+        The starting position
+        :param new_position:
+        The target position
+        :return:
+        If blocked, returns the starting position. Otherwise, returns the target position.
+        """
         if game.map.tilemap[int(new_position[0] / game.player.rect[2])][
             int(new_position[1] / game.player.rect[3])].collisions is False and \
                 -1 < new_position[0] < game.player.rect[3] * game.map.width and \
                 -1 < new_position[1] < game.player.rect[3] * game.map.height:
-            logger.debug(
-                f'Player moved from ({old_position[0]}, {old_position[1]}) to ({new_position[0]}, {new_position[1]})')
             position = new_position
         else:
             game.sound_hit_wall.play()
-            logger.debug(
-                f'Movement blocked from ({old_position[0]}, {old_position[1]})'
-                f' to ({new_position[0]}, {new_position[1]})')
             position = old_position
-        logger.debug(f'Player is now facing {str(self.dir)} ({repr(self.dir)})')
         return position
 
     def interact(self, game):
+        """
+        Allows the player to interact with the environment.
+        :param game:
+        :return:
+        """
         map_x = int(self.x / IMGSIZE)
         map_y = int(self.y / IMGSIZE)
         target_x = self.x
         target_y = self.y
-        if str(self.dir) is "NORTH":
+        if str(self.dir) is NORTH:
             map_y -= 1
             target_y = self.y - IMGSIZE
-        elif str(self.dir) is 'WEST':
+        elif str(self.dir) is WEST:
             map_x -= 1
             target_x = self.x - IMGSIZE
-        elif str(self.dir) is 'SOUTH':
+        elif str(self.dir) is SOUTH:
             map_y += 1
             target_y = self.y - IMGSIZE
-        elif str(self.dir) is 'EAST':
+        elif str(self.dir) is EAST:
             map_x += 1
             target_x = self.x - IMGSIZE
         target: Tile = game.map.tilemap[map_y][map_x]
