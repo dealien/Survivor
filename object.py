@@ -57,15 +57,19 @@ class Player(Object):
         self.image = pygame.transform.rotate(self.base_image, d)
         self.rect = self.check_collision(game, old_position, new_position)
         if self.rect is new_position:
-            debug_text=(
+            debug_text = (
                 f'Player moved from ({old_position[0]}, {old_position[1]}) to ({new_position[0]}, {new_position[1]})')
         else:
-            debug_text=(
+            debug_text = (
                 f'Movement blocked from ({old_position[0]}, {old_position[1]})'
                 f' to ({new_position[0]}, {new_position[1]})')
         logger.debug(f'{debug_text}, now facing {str(self.dir)} ({repr(self.dir)})')
-    def turnto(self, d):
+
+    def turnto(self, d, moved=True):
         self.dir = Direction(d)
+        self.image = pygame.transform.rotate(self.base_image, d)
+        if not moved:
+            logger.debug(f'Player turned to face {str(self.dir)} ({repr(self.dir)})')
 
     def check_collision(self, game, old_position, new_position):
         """

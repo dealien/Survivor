@@ -99,19 +99,34 @@ if testrun:
 # Main game loop. Detect keyboard input for character movements, etc.
 # Controls:
 # - WASD, arrow keys, or numpad 2468 to move
+#   - Hold shift while pressing a movement key to turn in place
 # - E, Z, or numpad 5 to interact
 while not game.game_over:
     events = pygame.event.get()
     for event in events:
         if event.type == KEYDOWN:
-            if event.key == K_LEFT or event.key == K_a or event.key == K_KP4:
+            if pygame.key.get_mods() & KMOD_SHIFT and (event.key == K_LEFT or event.key == K_a or event.key == K_KP4):
+                game.player.turnto(90,False)
+            if pygame.key.get_mods() & KMOD_SHIFT and (event.key == K_RIGHT or event.key == K_d or event.key == K_KP6):
+                game.player.turnto(270,False)
+            if pygame.key.get_mods() & KMOD_SHIFT and (event.key == K_UP or event.key == K_w or event.key == K_KP8):
+                game.player.turnto(0,False)
+            if pygame.key.get_mods() & KMOD_SHIFT and (event.key == K_DOWN or event.key == K_s or event.key == K_KP2):
+                game.player.turnto(180,False)
+
+            if (event.key == K_LEFT or event.key == K_a or event.key == K_KP4) \
+                    and not pygame.key.get_mods() & KMOD_SHIFT:
                 game.player.move(90, game)
-            if event.key == K_RIGHT or event.key == K_d or event.key == K_KP6:
+            if (event.key == K_RIGHT or event.key == K_d or event.key == K_KP6) \
+                    and not pygame.key.get_mods() & KMOD_SHIFT:
                 game.player.move(270, game)
-            if event.key == K_UP or event.key == K_w or event.key == K_KP8:
+            if (event.key == K_UP or event.key == K_w or event.key == K_KP8) \
+                    and not pygame.key.get_mods() & KMOD_SHIFT:
                 game.player.move(0, game)
-            if event.key == K_DOWN or event.key == K_s or event.key == K_KP2:
+            if (event.key == K_DOWN or event.key == K_s or event.key == K_KP2) \
+                    and not pygame.key.get_mods() & KMOD_SHIFT:
                 game.player.move(180, game)
+
             if event.key == K_z or event.key == K_e or event.key == K_KP5:
                 game.player.interact(game)
     render_all(game)
