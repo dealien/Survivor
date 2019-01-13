@@ -35,7 +35,7 @@ class Game:
         # self.font = pygame.font.Font(os.path.join(AUDDIR, 'visitor1.ttf'), 18)
         # self.title_font = pygame.font.Font(os.path.join(AUDDIR, 'visitor1.ttf'), 36)
         self.paused = False
-        self.game_over = False
+        self.running = True
 
         # Sounds
         # TODO: Make all sounds live in a main "sound" object
@@ -98,21 +98,27 @@ if testrun:
 
 # Main game loop. Detect keyboard input for character movements, etc.
 # Controls:
+# - Escape to quit
 # - WASD, arrow keys, or numpad 2468 to move
 #   - Hold shift while pressing a movement key to turn in place
 # - E, Z, or numpad 5 to interact
-while not game.game_over:
+while game.running:
     events = pygame.event.get()
     for event in events:
+        if event.type == QUIT:
+            game.running = False
         if event.type == KEYDOWN:
+            if event.key == K_ESCAPE:
+                game.running = False
+
             if pygame.key.get_mods() & KMOD_SHIFT and (event.key == K_LEFT or event.key == K_a or event.key == K_KP4):
-                game.player.turnto(90,False)
+                game.player.turnto(90, False)
             if pygame.key.get_mods() & KMOD_SHIFT and (event.key == K_RIGHT or event.key == K_d or event.key == K_KP6):
-                game.player.turnto(270,False)
+                game.player.turnto(270, False)
             if pygame.key.get_mods() & KMOD_SHIFT and (event.key == K_UP or event.key == K_w or event.key == K_KP8):
-                game.player.turnto(0,False)
+                game.player.turnto(0, False)
             if pygame.key.get_mods() & KMOD_SHIFT and (event.key == K_DOWN or event.key == K_s or event.key == K_KP2):
-                game.player.turnto(180,False)
+                game.player.turnto(180, False)
 
             if (event.key == K_LEFT or event.key == K_a or event.key == K_KP4) \
                     and not pygame.key.get_mods() & KMOD_SHIFT:
@@ -131,3 +137,4 @@ while not game.game_over:
                 game.player.interact(game)
     render_all(game)
     game.clock.tick(50)
+pygame.quit()
