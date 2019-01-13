@@ -98,7 +98,8 @@ if testrun:
 
 # Main game loop. Detect keyboard input for character movements, etc.
 # Controls:
-# - WASD or arrow keys to move
+# - WASD, arrow keys, or numpad 2468 to move
+# - E, Z, or numpad 5 to interact
 while not game.game_over:
     events = pygame.event.get()
     for event in events:
@@ -111,5 +112,7 @@ while not game.game_over:
                 game.player.move(0, game)
             if event.key == K_DOWN or event.key == K_s or event.key == K_KP2:
                 game.player.move(180, game)
+            if event.key == K_z or event.key == K_e or event.key == K_KP5:
+                game.player.interact(game)
     render_all(game)
     game.clock.tick(50)

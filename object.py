@@ -1,3 +1,4 @@
+from mapgen import Tile
 from settings import *
 
 
@@ -77,6 +78,27 @@ class Player(Object):
         logger.debug(f'Player is now facing {str(self.dir)} ({repr(self.dir)})')
         return position
 
+    def interact(self, game):
+        map_x = int(self.x / IMGSIZE)
+        map_y = int(self.y / IMGSIZE)
+        target_x = self.x
+        target_y = self.y
+        if str(self.dir) is "NORTH":
+            map_y -= 1
+            target_y = self.y - IMGSIZE
+        elif str(self.dir) is 'WEST':
+            map_x -= 1
+            target_x = self.x - IMGSIZE
+        elif str(self.dir) is 'SOUTH':
+            map_y += 1
+            target_y = self.y - IMGSIZE
+        elif str(self.dir) is 'EAST':
+            map_x += 1
+            target_x = self.x - IMGSIZE
+        target: Tile = game.map.tilemap[map_y][map_x]
+        logger.debug(f"Interaction target at ({target_x}, {target_y}) is {target.material}")
+        return True
+
 
 class Direction():
     def __init__(self, d=0):
@@ -87,8 +109,8 @@ class Direction():
 
     def __str__(self):
         directions = {'0': 'NORTH',  # North
-                      '90': 'EAST',  # East
+                      '90': 'WEST',  # West
                       '180': 'SOUTH',  # South
-                      '270': 'WEST'}  # West
+                      '270': 'EAST'}  # East
         d = self.direction
         return directions[str(d)]
