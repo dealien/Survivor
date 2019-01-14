@@ -1,3 +1,12 @@
+"""
+.. module:: map
+   :platform: Unix, Windows
+   :synopsis: Contains required classes and functions for ``mapgen``.
+
+.. moduleauthor:: Vyren
+
+"""
+
 import pygame
 
 import mapgen
@@ -8,15 +17,21 @@ logger = mylogger.setup_custom_logger('root')
 
 
 class Map:
-    """Stores information about the map, including terrain,
-    tilemap, and properties used to generate the map.
-    Uses `mapgen.generate_terrain()` and
-    `mapgen.generate_tilemap()` to generate terrain and tilemap.
+    """
+    Stores information about the map, including terrain,
+    tilemap, and the arguments used to generate the map.
+    
+    Uses ``mapgen.generate_terrain()`` to generate terrain and
+    ``mapgen.generate_tilemap()`` to generate the tilemap.
 
-    Input the height, width, and smoothness.
     """
 
     def __init__(self, height, width, smoothness):
+        """
+        :param height: Height of map to generate
+        :param width: Width of map to generate
+        :param smoothness: Number of times the terrain should be smoothed
+        """
         self.height = height
         self.width = width
         self.smoothness = smoothness
@@ -42,12 +57,18 @@ class Map:
         return str(self.terrain)
 
 
-# Tiles
 class Tile:
-    """Holds information about a specific map tile.
+    """
+    Holds information about a specific tile on the map.
     """
 
     def __init__(self, material, image, x, y):
+        """
+        :param material: The name of the material
+        :param image: The name of the image to be used when rendering the tile
+        :param x: The x position on the map
+        :param y: The y position on the map
+        """
         self.material = material
         self.texture = image
         self.collisions = False

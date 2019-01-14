@@ -4,6 +4,12 @@ import coloredlogs
 
 
 def setup_custom_logger(name):
+    """
+    
+
+    :param name: 
+
+    """
     formatter = logging.Formatter(fmt='%(asctime)s.%(msecs)03d %(module)s %(name)s[%(process)d] %(levelname)s %(message)s')
     handler = logging.FileHandler('main.log')
     handler.setFormatter(formatter)

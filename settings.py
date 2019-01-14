@@ -59,7 +59,6 @@ BLACK = (0, 0, 0)
 DARKWALL = (0, 0, 100)
 DARKFLOOR = (50, 50, 150)
 logger.debug('Colors loaded')
-
 # Textures
 logger.debug('Loading graphics...')
 graphics = {}

@@ -20,9 +20,7 @@ for i in sys.argv:
 
 
 class Game:
-    """
-    Main game object. Stores persistent information like settings, the map, the player, etc.
-    """
+    """Main game object. Stores persistent information like settings, the map, the player, etc."""
 
     def __init__(self):
         self.clock = pygame.time.Clock()
@@ -48,17 +46,22 @@ class Game:
 
 
 class Camera(object):
-    """
-    Offsets coordinates to allow display of objects relative to the player's position.
-    """
+    """Offsets coordinates to allow display of objects relative to the player's position."""
     def __init__(self):
         self.x_shift = self.y_shift = None
 
     def update(self):
+        """ """
         self.x_shift = 0 - game.player.x
         self.y_shift = 0 - game.player.y
 
     def apply(self, obj):
+        """
+        
+
+        :param obj: 
+
+        """
         if isinstance(obj, tuple):
             rx = obj[0] + self.x_shift + (WINDOW_WIDTH / 2)
             ry = obj[1] + self.y_shift + (WINDOW_HEIGHT / 2)
@@ -75,7 +78,9 @@ class Camera(object):
 def render_all(game):
     """
     Updates the display output, drawing all tiles, objects, and the player.
+
     :param game: the main game object
+
     """
     game.camera.update()
     game.surface.fill((0, 0, 0))

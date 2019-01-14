@@ -3,6 +3,7 @@ from settings import *
 
 
 class Object(pygame.sprite.Sprite):
+    """ """
     # This is a generic object: player, monster, chest, stairs etc.
     def __init__(self, image, x, y):
         pygame.sprite.Sprite.__init__(self)
@@ -16,12 +17,19 @@ class Object(pygame.sprite.Sprite):
         self.dir = Direction(0)
 
     def draw(self, surface):
+        """
+        
+
+        :param surface: 
+
+        """
         image = pygame.transform.rotate(self.base_image, self.dir)
         rect = image.get_rect()
         surface.blit(image, rect)
 
 
 class Player(Object):
+    """ """
     def __init__(self, image, x, y):
         Object.__init__(self, image, x, y)
         self.weapon = None
@@ -29,21 +37,42 @@ class Player(Object):
 
     @property
     def x(self):
+        """ """
         return self.rect[0]
 
     @x.setter
     def x(self, val):
+        """
+        
+
+        :param val: 
+
+        """
         self.rect[0] = val
 
     @property
     def y(self):
+        """ """
         return self.rect[1]
 
     @y.setter
     def y(self, val):
+        """
+        
+
+        :param val: 
+
+        """
         self.rect[1] = val
 
     def move(self, d, game):
+        """
+        
+
+        :param d: param game:
+        :param game: 
+
+        """
         dirs = {
             '0': (0, -IMGSIZE),  # North
             '90': (-IMGSIZE, 0),  # West
@@ -66,6 +95,15 @@ class Player(Object):
         logger.debug(f'{debug_text}, now facing {str(self.dir)} ({repr(self.dir)})')
 
     def turnto(self, d, moved=True):
+        """
+        Turns the player to face the specified direction.
+
+        :type d: int
+        :param d: The direction to face. Must be 0, 90, 180, or 270.
+        :param moved: If the player was just moved, the direction change log output will be suppressed in favor of the
+        one output by ``player.move()``. (Default value = True)
+
+        """
         self.dir = Direction(d)
         self.image = pygame.transform.rotate(self.base_image, d)
         if not moved:
@@ -74,10 +112,12 @@ class Player(Object):
     def check_collision(self, game, old_position, new_position):
         """
         Ensures that a given movement is posssible and that nothing is in the way.
-        :param game: the main game object
-        :param old_position: the starting position
-        :param new_position: the target position
-        :return: if blocked, returns the starting position. Otherwise, returns the target position.
+
+        :param game: The main game object
+        :param old_position: The starting position
+        :param new_position: The target position
+        :returns: If the movement is blocked, returns the starting position. Otherwise, returns the target position.
+
         """
         if game.map.tilemap[int(new_position[0] / game.player.rect[2])][
             int(new_position[1] / game.player.rect[3])].collisions is False and \
@@ -92,8 +132,9 @@ class Player(Object):
     def interact(self, game):
         """
         Allows the player to interact with the environment.
-        :param game: the main game object
-        :return:
+
+        :param game: The main game object
+
         """
         map_x = int(self.x / IMGSIZE)
         map_y = int(self.y / IMGSIZE)
@@ -117,6 +158,7 @@ class Player(Object):
 
 
 class Direction():
+    """ """
     def __init__(self, d=0):
         self.direction = d
 
