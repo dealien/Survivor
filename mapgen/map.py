@@ -10,8 +10,8 @@ logger = mylogger.setup_custom_logger('root')
 class Map:
     """Stores information about the map, including terrain,
     tilemap, and properties used to generate the map.
-    Uses mapgen.generate_terrain() and
-    mapgen.generate_tilemap() to generate terrain and tilemap.
+    Uses `mapgen.generate_terrain()` and
+    `mapgen.generate_tilemap()` to generate terrain and tilemap.
 
     Input the height, width, and smoothness.
     """

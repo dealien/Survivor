@@ -26,11 +26,11 @@ logger.debug(f'IMGDIR = {IMGDIR}')
 logger.debug(f'AUDDIR = {AUDDIR}')
 
 # Constants
-#Directions
-NORTH='NORTH'
-WEST='WEST'
-SOUTH='SOUTH'
-EAST='EAST'
+# Directions
+NORTH = 'NORTH'
+WEST = 'WEST'
+SOUTH = 'SOUTH'
+EAST = 'EAST'
 
 # Game Window variables
 WINDOW_WIDTH = 1056
@@ -61,17 +61,19 @@ DARKFLOOR = (50, 50, 150)
 logger.debug('Colors loaded')
 
 # Textures
-logger.debug('Loading textures...')
-textures = {}
+logger.debug('Loading graphics...')
+graphics = {}
 directory = os.fsencode(IMGDIR)
-for file in os.listdir(directory):
-    filename = os.fsdecode(file)
-    if filename.endswith('.bmp') or filename.endswith('.png'):
-        textures[filename[:-4]] = pygame.image.load(os.path.join(IMGDIR, filename)).convert_alpha()
-        continue
-    else:
-        continue
+dirs = [name for name in os.listdir(IMGDIR) if os.path.isdir(os.path.join(IMGDIR, name))]
+for directory in dirs:
+    for file in os.listdir(os.path.join(IMGDIR, directory)):
+        filename = os.fsdecode(file)
+        if filename.endswith('.bmp') or filename.endswith('.png'):
+            graphics[filename[:-4]] = pygame.image.load(os.path.join(IMGDIR, directory, filename)).convert_alpha()
+            continue
+        else:
+            continue
 logger.debug('Textures loaded')
-logger.debug('textures = \n' + pp.pformat(textures))
+logger.debug('graphics = \n' + pp.pformat(graphics))
 
 logger.debug('Settings loaded successfully')

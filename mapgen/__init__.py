@@ -356,7 +356,7 @@ def generate_tilemap(terrain, key):
     y = 0
     for i in terrain:
         for j in i:
-            tilemap[x][y] = Tile(key[j],textures[key[j]],x,y)
+            tilemap[x][y] = Tile(key[j], graphics[key[j]], x, y)
             y += 1
         x += 1
         y = 0

@@ -74,14 +74,10 @@ class Player(Object):
     def check_collision(self, game, old_position, new_position):
         """
         Ensures that a given movement is posssible and that nothing is in the way.
-        :param game:
-        The main game object
-        :param old_position:
-        The starting position
-        :param new_position:
-        The target position
-        :return:
-        If blocked, returns the starting position. Otherwise, returns the target position.
+        :param game: the main game object
+        :param old_position: the starting position
+        :param new_position: the target position
+        :return: if blocked, returns the starting position. Otherwise, returns the target position.
         """
         if game.map.tilemap[int(new_position[0] / game.player.rect[2])][
             int(new_position[1] / game.player.rect[3])].collisions is False and \
@@ -96,7 +92,7 @@ class Player(Object):
     def interact(self, game):
         """
         Allows the player to interact with the environment.
-        :param game:
+        :param game: the main game object
         :return:
         """
         map_x = int(self.x / IMGSIZE)

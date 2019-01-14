@@ -21,14 +21,14 @@ for i in sys.argv:
 
 class Game:
     """
-    Main game object. Stores persistent information like settings, the map, etc.
+    Main game object. Stores persistent information like settings, the map, the player, etc.
     """
 
     def __init__(self):
         self.clock = pygame.time.Clock()
         self.surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), 0, 32)
         pygame.display.set_caption('Survivor')  # Set window title
-        self.player = Player(textures['player'], (MAP_WIDTH / 2) * IMGSIZE, (MAP_HEIGHT / 2) * IMGSIZE)
+        self.player = Player(graphics['player'], (MAP_WIDTH / 2) * IMGSIZE, (MAP_HEIGHT / 2) * IMGSIZE)
         new_map = Map(MAP_HEIGHT, MAP_WIDTH, MAP_SMOOTHNESS)
         self.map = new_map
         self.camera = Camera()
@@ -47,7 +47,10 @@ class Game:
         pygame.mixer.music.set_volume(self.current_volume)
 
 
-class Camera(object):  # Offsets coordinates to allow display of objects relative to player position
+class Camera(object):
+    """
+    Offsets coordinates to allow display of objects relative to the player's position.
+    """
     def __init__(self):
         self.x_shift = self.y_shift = None
 
@@ -70,6 +73,10 @@ class Camera(object):  # Offsets coordinates to allow display of objects relativ
 
 
 def render_all(game):
+    """
+    Updates the display output, drawing all tiles, objects, and the player.
+    :param game: the main game object
+    """
     game.camera.update()
     game.surface.fill((0, 0, 0))
     for a in range(len(game.map.tilemap)):
@@ -79,10 +86,8 @@ def render_all(game):
             x = b * IMGSIZE
             # Draw from the perspective of the camera
             game.surface.blit(game.map.tilemap[a][b].texture, game.camera.apply((x, y)))
-    # game.surface.blit(textures['player'], game.camera.apply(game.player))  # Draw the player
     game.surface.blit(game.player.image, game.camera.apply(game.player))  # Draw the player
     pygame.display.update()
-
 
 pygame.init()
 game = Game()
