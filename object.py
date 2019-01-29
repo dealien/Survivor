@@ -19,8 +19,6 @@ class Object(pygame.sprite.Sprite):
 
     def draw(self, surface):
         """
-        
-
         :param surface: 
 
         """
@@ -45,8 +43,6 @@ class Player(Object):
     @x.setter
     def x(self, val):
         """
-        
-
         :param val: 
 
         """
@@ -60,8 +56,6 @@ class Player(Object):
     @y.setter
     def y(self, val):
         """
-        
-
         :param val: 
 
         """
@@ -69,8 +63,6 @@ class Player(Object):
 
     def move(self, d, game):
         """
-        
-
         :param d: param game:
         :param game: 
 
@@ -114,7 +106,7 @@ class Player(Object):
     def check_collision(self, game, old_position, new_position):
         """
         Ensures that a given movement is possible and that nothing is in the way. Movement can be blocked by map
-        borders, objects, or impassable tiles.
+        borders, objects, or impassable tiles. Some tiles may be impassable without certain equipment.
 
         :param game: The main game object
         :param old_position: The starting position
@@ -122,9 +114,10 @@ class Player(Object):
         :returns: If the movement is blocked, returns the starting position. Otherwise, returns the target position.
 
         """
-        target=game.map.tilemap[int(new_position[0] / game.player.rect[2])][
-            int(new_position[1] / game.player.rect[3])]
-        if target.collisions is False and target.passable and \
+        newx = int(new_position[0] / game.player.rect[2])
+        newy = int(new_position[1] / game.player.rect[3])
+        target = game.map.tilemap[newy][newx]
+        if (not target.collisions and target.passable) and \
                 -1 < new_position[0] < game.player.rect[3] * game.map.width and \
                 -1 < new_position[1] < game.player.rect[3] * game.map.height:
             position = new_position

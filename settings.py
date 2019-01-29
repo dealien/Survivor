@@ -39,8 +39,8 @@ logger.debug(f'WINDOW_WIDTH = {WINDOW_WIDTH}')
 logger.debug(f'WINDOW_HEIGHT = {WINDOW_HEIGHT}')
 
 # Mapgen settings
-MAP_HEIGHT = 50
-MAP_WIDTH = 50
+MAP_HEIGHT = 150
+MAP_WIDTH = 150
 MAP_SMOOTHNESS = 10
 logger.debug(f'MAP_HEIGHT = {MAP_HEIGHT}')
 logger.debug(f'MAP_HEIGHT = {MAP_HEIGHT}')
@@ -74,7 +74,7 @@ for directory in dirs:
         else:
             continue
 logger.debug('Textures loaded')
-logger.debug('graphics = \n' + pp.pformat(GRAPHICS))
+logger.debug('GRAPHICS = \n' + pp.pformat(GRAPHICS))
 
 # Tiles
 # Tiles whose textures should rotate

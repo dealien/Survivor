@@ -38,10 +38,10 @@ class Map:
         self.smoothness = smoothness
         self.terrain = mapgen.generate_terrain(self.height, self.width, 4,
                                                {
-                                                   '*': .2,
+                                                   '*': 0.4,
                                                    " ": 1,
-                                                   "+": 0.55,
-                                                   "#": 0.25
+                                                   "+": 0.75,
+                                                   "#": 0.45
                                                })
         self.tilemap = mapgen.generate_tilemap(self.terrain, {
             '*': 'water',

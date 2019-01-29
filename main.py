@@ -1,4 +1,5 @@
 import sys
+import time
 
 from pygame.locals import *
 
@@ -47,6 +48,7 @@ class Game:
 
 class Camera(object):
     """Offsets coordinates to allow display of objects relative to the player's position."""
+
     def __init__(self):
         self.x_shift = self.y_shift = None
 
@@ -82,17 +84,21 @@ def render_all(game):
     :param game: the main game object
 
     """
+    # render_start = time.perf_counter()
     game.camera.update()
     game.surface.fill((0, 0, 0))
     for a in range(len(game.map.tilemap)):
         for b in range(len(game.map.tilemap[a])):
-            # Set the x and y coordinates by the number of pixels the image is, 16 , 32 etc.
+            # Set the x and y coordinates based on the number of pixels per tile image
             y = a * IMGSIZE
             x = b * IMGSIZE
             # Draw from the perspective of the camera
             game.surface.blit(game.map.tilemap[a][b].texture, game.camera.apply((x, y)))
     game.surface.blit(game.player.image, game.camera.apply(game.player))  # Draw the player
     pygame.display.update()
+    # render_end = time.perf_counter()
+    # logger.debug(f'Rendered in {render_end - render_start} seconds')
+
 
 pygame.init()
 game = Game()
