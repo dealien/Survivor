@@ -143,21 +143,27 @@ if testrun:
     # Exit after testing before the main loop
     sys.exit()
 
+debug_overlay_enabled=False
+
 # Main game loop. Detect keyboard input for character movements, etc.
 # Controls:
 # - Escape to quit
 # - WASD, arrow keys, or numpad 2468 to move
 #   - Hold shift while pressing a movement key to turn in place
 # - E, Z, or numpad 5 to interact
+# - Backslash to toggle debug overlay
 while game.running:
     events = pygame.event.get()
     for event in events:
         if event.type == QUIT:
             game.running = False
         if event.type == KEYDOWN:
+
+            # Quit the game when escape is pressed
             if event.key == K_ESCAPE:
                 game.running = False
 
+            # Move player normally
             if pygame.key.get_mods() & KMOD_SHIFT and (event.key == K_LEFT or event.key == K_a or event.key == K_KP4):
                 game.player.turnto(90, False)
             if pygame.key.get_mods() & KMOD_SHIFT and (event.key == K_RIGHT or event.key == K_d or event.key == K_KP6):
@@ -167,6 +173,7 @@ while game.running:
             if pygame.key.get_mods() & KMOD_SHIFT and (event.key == K_DOWN or event.key == K_s or event.key == K_KP2):
                 game.player.turnto(180, False)
 
+            # Turn the player in place
             if (event.key == K_LEFT or event.key == K_a or event.key == K_KP4) \
                     and not pygame.key.get_mods() & KMOD_SHIFT:
                 game.player.move(90, game)
@@ -180,8 +187,13 @@ while game.running:
                     and not pygame.key.get_mods() & KMOD_SHIFT:
                 game.player.move(180, game)
 
+            # Interact with the tile in front of the player
             if event.key == K_z or event.key == K_e or event.key == K_KP5:
                 game.player.interact(game)
+
+            # Toggle debug overlay
+            if event.key == K_BACKSLASH:
+                debug_overlay_enabled = not debug_overlay_enabled
         if event.type == SONG_END:
             game.play_next_song()
     render_all(game)
