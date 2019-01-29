@@ -32,8 +32,9 @@ class Game:
         new_map = Map(MAP_HEIGHT, MAP_WIDTH, MAP_SMOOTHNESS)
         self.map = new_map
         self.camera = Camera()
-        # self.font = pygame.font.Font(os.path.join(AUDDIR, 'visitor1.ttf'), 18)
-        # self.title_font = pygame.font.Font(os.path.join(AUDDIR, 'visitor1.ttf'), 36)
+        self.font = pygame.font.Font(os.path.join(ADIR, 'Sarabun-Regular.ttf'), 18)
+        self.small_font = pygame.font.Font(os.path.join(ADIR, 'RobotoMono-Bold.ttf'), 12)
+        self.title_font = pygame.font.Font(os.path.join(ADIR, 'PT_Sans-Web-Regular.ttf'), 36)
         self.paused = False
         self.running = True
 
@@ -93,6 +94,17 @@ class Camera(object):
         return rx, ry
 
 
+def draw_debug_overlay():
+    mouse_pos = pygame.mouse.get_pos()
+    text = game.small_font.render('[' + str(mouse_pos[0]) + ', ' + str(mouse_pos[1]) + ']', True, (255, 255, 255))
+    r = text.get_rect()
+    w, h = pygame.display.get_surface().get_size()
+    x = w - text.get_width()
+    r[0] = x
+    pygame.draw.rect(game.surface, (0, 0, 0), r)
+    game.surface.blit(text, (x, 0))
+
+
 def render_all(game):
     """
     Updates the display output, drawing all tiles, objects, and the player.
@@ -111,6 +123,7 @@ def render_all(game):
             # Draw from the perspective of the camera
             game.surface.blit(game.map.tilemap[a][b].texture, game.camera.apply((x, y)))
     game.surface.blit(game.player.image, game.camera.apply(game.player))  # Draw the player
+    draw_debug_overlay()
     pygame.display.update()
     # render_end = time.perf_counter()
     # logger.debug(f'Rendered in {render_end - render_start} seconds')

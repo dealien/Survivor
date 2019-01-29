@@ -83,7 +83,7 @@ ROTATING = ['grass']
 # Tiles that cannot be moved through
 IMPASSABLE = ['water']
 
-SOUNDS={}
+SOUNDS = {}
 
 # Music
 logger.debug('Loading music...')

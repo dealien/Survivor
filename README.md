@@ -9,3 +9,5 @@ Dependencies are managed using [`pip-tools`](https://pypi.org/project/pip-tools/
 Docs generated using [Sphinx](http://www.sphinx-doc.org/en/1.6/index.html#). 
 
 Music by [HeatleyBros](https://www.youtube.com/channel/UCsLlqLIE-TqDq3lh5kU2PeA). 
+
+Fonts downloaded from [Google Fonts](https://fonts.google.com/). 
