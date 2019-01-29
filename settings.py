@@ -62,19 +62,19 @@ logger.debug('Colors loaded')
 
 # Textures
 logger.debug('Loading graphics...')
-graphics = {}
+GRAPHICS = {}
 directory = os.fsencode(IMGDIR)
 dirs = [name for name in os.listdir(IMGDIR) if os.path.isdir(os.path.join(IMGDIR, name))]
 for directory in dirs:
     for file in os.listdir(os.path.join(IMGDIR, directory)):
         filename = os.fsdecode(file)
         if filename.endswith('.bmp') or filename.endswith('.png'):
-            graphics[filename[:-4]] = pygame.image.load(os.path.join(IMGDIR, directory, filename)).convert_alpha()
+            GRAPHICS[filename[:-4]] = pygame.image.load(os.path.join(IMGDIR, directory, filename)).convert_alpha()
             continue
         else:
             continue
 ROTATING = ['grass']
 logger.debug('Textures loaded')
-logger.debug('graphics = \n' + pp.pformat(graphics))
+logger.debug('graphics = \n' + pp.pformat(GRAPHICS))
 
 logger.debug('Settings loaded successfully')
