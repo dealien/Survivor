@@ -19,11 +19,13 @@ else:
 
 ADIR = os.path.join(ROOTDIR, 'assets')
 IMGDIR = os.path.join(ADIR, 'images')
-AUDDIR = os.path.join(ADIR, 'sound')
+AUDDIR = os.path.join(ADIR, 'sounds')
+MUSDIR = os.path.join(ADIR, 'music')
 logger.debug(f'ROOTDIR = {ROOTDIR}')
 logger.debug(f'ADIR = {ADIR}')
 logger.debug(f'IMGDIR = {IMGDIR}')
 logger.debug(f'AUDDIR = {AUDDIR}')
+logger.debug(f'MUSICDIR = {MUSDIR}')
 
 # Constants
 # Directions
@@ -73,7 +75,6 @@ for directory in dirs:
             continue
         else:
             continue
-logger.debug('Textures loaded')
 logger.debug('GRAPHICS = \n' + pp.pformat(GRAPHICS))
 
 # Tiles
@@ -81,5 +82,15 @@ logger.debug('GRAPHICS = \n' + pp.pformat(GRAPHICS))
 ROTATING = ['grass']
 # Tiles that cannot be moved through
 IMPASSABLE = ['water']
+
+SOUNDS={}
+
+# Music
+logger.debug('Loading music...')
+SONGS = []
+files = [f for f in os.listdir(MUSDIR) if os.path.isfile(os.path.join(MUSDIR, f))]
+for filename in files:
+    SONGS.append(os.path.join(MUSDIR, filename))
+logger.debug('SONGS = \n' + pp.pformat(SONGS))
 
 logger.debug('Settings loaded successfully')

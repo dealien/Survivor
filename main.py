@@ -1,3 +1,4 @@
+import random
 import sys
 import time
 
@@ -37,13 +38,30 @@ class Game:
         self.running = True
 
         # Sounds
-        # TODO: Make all sounds live in a main "sound" object
-        self.sound_mob_hit_player = pygame.mixer.Sound(os.path.join(AUDDIR, 'mobHitPlayer.wav'))
-        self.sound_gold = pygame.mixer.Sound(os.path.join(AUDDIR, 'gold.wav'))
-        self.sound_hit_wall = pygame.mixer.Sound(os.path.join(AUDDIR, 'hit_wall.wav'))
         self.current_volume = 1.0
         self.music_paused = False
         pygame.mixer.music.set_volume(self.current_volume)
+        self.current_song = None
+        self.play_next_song()
+
+    def play_sound(self, path):
+        if not ('\\' in path and not ('/' in path)):
+            path = os.path.join(AUDDIR, path)
+        sound = SOUNDS.get(path)
+        if sound is None:
+            canonicalized_path = path.replace('/', os.sep).replace('\\', os.sep)
+            sound = pygame.mixer.Sound(canonicalized_path)
+            SOUNDS[path] = sound
+        sound.play()
+
+    def play_next_song(self):
+        next_song = random.choice(SONGS)
+        while next_song == self.current_song:
+            next_song = random.choice(SONGS)
+        self.current_song = next_song
+        pygame.mixer.music.load(next_song)
+        pygame.mixer.music.play()
+        logger.debug('Now playing ' + os.path.split(self.current_song)[1])
 
 
 class Camera(object):
@@ -59,8 +77,6 @@ class Camera(object):
 
     def apply(self, obj):
         """
-        
-
         :param obj: 
 
         """
@@ -102,6 +118,8 @@ def render_all(game):
 
 pygame.init()
 game = Game()
+SONG_END = pygame.USEREVENT + 1
+pygame.mixer.music.set_endevent(SONG_END)
 
 # When the script is run using the "--test-run" argument, test actions used in the main loop, then exit.
 if testrun:
@@ -151,6 +169,8 @@ while game.running:
 
             if event.key == K_z or event.key == K_e or event.key == K_KP5:
                 game.player.interact(game)
+        if event.type == SONG_END:
+            game.play_next_song()
     render_all(game)
     game.clock.tick(50)
 pygame.quit()

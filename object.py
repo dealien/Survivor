@@ -122,7 +122,7 @@ class Player(Object):
                 -1 < new_position[1] < game.player.rect[3] * game.map.height:
             position = new_position
         else:
-            game.sound_hit_wall.play()
+            game.play_sound('hit_wall.wav')
             position = old_position
         return position
 
