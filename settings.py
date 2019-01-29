@@ -59,6 +59,7 @@ BLACK = (0, 0, 0)
 DARKWALL = (0, 0, 100)
 DARKFLOOR = (50, 50, 150)
 logger.debug('Colors loaded')
+
 # Textures
 logger.debug('Loading graphics...')
 graphics = {}
@@ -72,6 +73,7 @@ for directory in dirs:
             continue
         else:
             continue
+ROTATING = ['grass']
 logger.debug('Textures loaded')
 logger.debug('graphics = \n' + pp.pformat(graphics))
 

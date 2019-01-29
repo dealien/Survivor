@@ -6,12 +6,13 @@
 .. moduleauthor:: Vyren
 
 """
+import random
 
 import pygame
 
 import mapgen
 import mylogger
-from settings import IMGSIZE
+from settings import IMGSIZE, ROTATING
 
 logger = mylogger.setup_custom_logger('root')
 
@@ -70,7 +71,13 @@ class Tile:
         :param y: The y position on the map
         """
         self.material = material
-        self.texture = image
+        # Rotate the texture if necessary
+        if material in ROTATING:
+            self.rot = random.randint(0, 3) * 90
+            self.texture = pygame.transform.rotate(image, self.rot)
+        else:
+            self.rot = 0
+            self.texture = image
         self.collisions = False
         self.durability = -1
         self.rect = pygame.Rect(x, y, IMGSIZE, IMGSIZE)
