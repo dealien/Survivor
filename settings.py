@@ -73,8 +73,13 @@ for directory in dirs:
             continue
         else:
             continue
-ROTATING = ['grass']
 logger.debug('Textures loaded')
 logger.debug('graphics = \n' + pp.pformat(GRAPHICS))
+
+# Tiles
+# Tiles whose textures should rotate
+ROTATING = ['grass']
+# Tiles that cannot be moved through
+IMPASSABLE = ['water']
 
 logger.debug('Settings loaded successfully')

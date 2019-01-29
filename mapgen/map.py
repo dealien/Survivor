@@ -12,7 +12,7 @@ import pygame
 
 import mapgen
 import mylogger
-from settings import IMGSIZE, ROTATING
+from settings import IMGSIZE, ROTATING, IMPASSABLE
 
 logger = mylogger.setup_custom_logger('root')
 
@@ -79,5 +79,6 @@ class Tile:
             self.rot = 0
             self.texture = image
         self.collisions = False
+        self.passable = self.material not in IMPASSABLE
         self.durability = -1
         self.rect = pygame.Rect(x, y, IMGSIZE, IMGSIZE)

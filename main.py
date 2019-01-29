@@ -14,7 +14,7 @@ testrun = False
 for i in sys.argv:
     if "--test-run" in i:
         testrun = True
-        logger.debug("Beginning test run...")
+        logger.warning("Beginning test run...")
         os.environ["SDL_VIDEODRIVER"] = "dummy"
         logger.debug(f"SDL_VIDEODRIVER = {os.environ.get('SDL_VIDEODRIVER')}")
 

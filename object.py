@@ -4,6 +4,7 @@ from settings import *
 
 class Object(pygame.sprite.Sprite):
     """ """
+
     # This is a generic object: player, monster, chest, stairs etc.
     def __init__(self, image, x, y):
         pygame.sprite.Sprite.__init__(self)
@@ -30,6 +31,7 @@ class Object(pygame.sprite.Sprite):
 
 class Player(Object):
     """ """
+
     def __init__(self, image, x, y):
         Object.__init__(self, image, x, y)
         self.weapon = None
@@ -111,7 +113,8 @@ class Player(Object):
 
     def check_collision(self, game, old_position, new_position):
         """
-        Ensures that a given movement is posssible and that nothing is in the way.
+        Ensures that a given movement is possible and that nothing is in the way. Movement can be blocked by map
+        borders, objects, or impassable tiles.
 
         :param game: The main game object
         :param old_position: The starting position
@@ -119,8 +122,9 @@ class Player(Object):
         :returns: If the movement is blocked, returns the starting position. Otherwise, returns the target position.
 
         """
-        if game.map.tilemap[int(new_position[0] / game.player.rect[2])][
-            int(new_position[1] / game.player.rect[3])].collisions is False and \
+        target=game.map.tilemap[int(new_position[0] / game.player.rect[2])][
+            int(new_position[1] / game.player.rect[3])]
+        if target.collisions is False and target.passable and \
                 -1 < new_position[0] < game.player.rect[3] * game.map.width and \
                 -1 < new_position[1] < game.player.rect[3] * game.map.height:
             position = new_position
@@ -159,6 +163,7 @@ class Player(Object):
 
 class Direction():
     """ """
+
     def __init__(self, d=0):
         self.direction = d
 
