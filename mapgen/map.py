@@ -82,3 +82,6 @@ class Tile:
         self.passable = self.material not in IMPASSABLE
         self.durability = -1
         self.rect = pygame.Rect(x, y, IMGSIZE, IMGSIZE)
+
+    def __str__(self):
+        return f'{self.material} tile at [{self.rect[0]}, {self.rect[1]}]'

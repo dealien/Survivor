@@ -1,6 +1,7 @@
 import random
 import sys
 import time
+from math import floor
 
 from pygame.locals import *
 
@@ -109,15 +110,48 @@ class Camera(object):
         return rx, ry
 
 
+def round_down(num, divisor):
+    return floor(num / divisor) * divisor
+
+
 def draw_debug_overlay():
     mouse_pos = pygame.mouse.get_pos()
-    text = game.small_font.render('[' + str(mouse_pos[0]) + ', ' + str(mouse_pos[1]) + ']', True, (255, 255, 255))
-    r = text.get_rect()
     w, h = pygame.display.get_surface().get_size()
-    x = w - text.get_width()
-    r[0] = x
-    pygame.draw.rect(game.surface, (0, 0, 0), r)
-    game.surface.blit(text, (x, 0))
+
+    text_mouse_pos = game.small_font.render(f'Mouse: [{mouse_pos[0]}, {mouse_pos[1]}]', True, (255, 255, 255))
+    text_mouse_pos_rect = text_mouse_pos.get_rect()
+    text_mouse_pos_x = w - text_mouse_pos.get_width()
+    text_mouse_pos_rect[0] = text_mouse_pos_x
+
+    text_player_pos = game.small_font.render(f'Player: [{game.player.rect[0]}, {game.player.rect[1]}] '
+                                             f'({int(game.player.rect[0] / 16)}, {int(game.player.rect[1] / 16)}); '
+                                             f'facing {str(game.player.dir)} ({repr(game.player.dir)})'
+                                             , True, (255, 255, 255))
+    text_player_pos_rect = text_player_pos.get_rect()
+    text_player_pos_x = w - text_player_pos.get_width()
+    text_player_pos_rect[0] = text_player_pos_x
+    text_player_pos_rect[1] = 17
+
+    pygame.draw.rect(game.surface, (0, 0, 0), text_mouse_pos_rect)
+    game.surface.blit(text_mouse_pos, text_mouse_pos_rect)
+    pygame.draw.rect(game.surface, (0, 0, 0), text_player_pos_rect)
+    game.surface.blit(text_player_pos, text_player_pos_rect)
+
+
+def get_debug_info_at_mouse():
+    # mx, my = pygame.mouse.get_pos()
+    # mx = mx + (game.camera.x_shift / 16) + ((WINDOW_WIDTH / 2))
+    # my = my + (game.camera.y_shift / 16) + ((WINDOW_HEIGHT / 2))
+    mx, my = game.camera.apply(pygame.mouse.get_pos())
+    mx = int(round_down(mx, 16) / 16)
+    my = int(round_down(my, 16) / 16)
+    try:
+        selected_tile = game.map.tilemap[my][mx]
+        logger.debug(selected_tile)
+    except IndexError:
+        logger.warning(f'Coordinates out of range: [{mx}, {my}]')
+    # tiles = [j for i in game.map.tilemap for j in i]
+    # selected_tile = [t for t in tiles if t.rect.collidepoint((mx, my))]
 
 
 def render_all(game):
@@ -159,7 +193,7 @@ if testrun:
     # Exit after testing before the main loop
     sys.exit()
 
-debug_overlay_enabled = False
+debug_overlay_enabled = True
 
 # Main game loop. Detect keyboard input for character movements, etc.
 # Controls:
@@ -210,8 +244,15 @@ while game.running:
             # Toggle debug overlay
             if event.key == K_BACKSLASH:
                 debug_overlay_enabled = not debug_overlay_enabled
+
+        # When the current song ends, play the next one
         if event.type == SONG_END:
             game.play_next_song()
+
+        # Get debug information from clicked objects
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            get_debug_info_at_mouse()
+
     render_all(game)
     game.clock.tick(50)
 pygame.quit()
