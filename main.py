@@ -39,11 +39,25 @@ class Game:
         self.running = True
 
         # Sounds
-        self.current_volume = 1.0
+        self.current_volume = 0.25
         self.music_paused = False
-        pygame.mixer.music.set_volume(self.current_volume)
         self.current_song = None
         self.play_next_song()
+
+    @property
+    def current_volume(self):
+        return self._current_volume
+
+    @current_volume.getter
+    def current_volume(self):
+        if not self._current_volume == pygame.mixer.music.get_volume():
+            self._current_volume = pygame.mixer.music.get_volume()
+        return self._current_volume
+
+    @current_volume.setter
+    def current_volume(self, val):
+        self._current_volume = val
+        pygame.mixer.music.set_volume(self._current_volume)
 
     def play_sound(self, path):
         if not ('\\' in path and not ('/' in path)):
@@ -53,6 +67,7 @@ class Game:
             canonicalized_path = path.replace('/', os.sep).replace('\\', os.sep)
             sound = pygame.mixer.Sound(canonicalized_path)
             SOUNDS[path] = sound
+        sound.set_volume(self.current_volume)
         sound.play()
 
     def play_next_song(self):
@@ -123,7 +138,8 @@ def render_all(game):
             # Draw from the perspective of the camera
             game.surface.blit(game.map.tilemap[a][b].texture, game.camera.apply((x, y)))
     game.surface.blit(game.player.image, game.camera.apply(game.player))  # Draw the player
-    draw_debug_overlay()
+    if debug_overlay_enabled:
+        draw_debug_overlay()
     pygame.display.update()
     # render_end = time.perf_counter()
     # logger.debug(f'Rendered in {render_end - render_start} seconds')
@@ -143,7 +159,7 @@ if testrun:
     # Exit after testing before the main loop
     sys.exit()
 
-debug_overlay_enabled=False
+debug_overlay_enabled = False
 
 # Main game loop. Detect keyboard input for character movements, etc.
 # Controls:
