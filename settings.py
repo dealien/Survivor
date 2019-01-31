@@ -5,7 +5,10 @@ import pygame
 
 import mylogger
 
-logger = mylogger.setup_custom_logger('root')
+LOGLEVEL = 3
+
+main_log = open('main.log', 'w')
+logger = mylogger.setup_custom_logger('root', LOGLEVEL)
 pp = pprint.PrettyPrinter(indent=4)
 
 logger.debug('Loading settings...')

@@ -5,7 +5,7 @@ import mylogger
 from mapgen.map import Tile
 from settings import *
 
-logger = mylogger.setup_custom_logger('root')
+logger = mylogger.setup_custom_logger('root', LOGLEVEL)
 
 
 def generate_terrain(width, height, smoothness, values):
@@ -48,7 +48,7 @@ def generate_terrain(width, height, smoothness, values):
         _smooth(terrain, values)
 
     terrain_end = time.perf_counter()
-    logger.debug(f'Terrain generated in {terrain_end-terrain_start} seconds')
+    logger.debug(f'Terrain generated in {terrain_end - terrain_start} seconds')
     # Return the terrain
     return terrain
 

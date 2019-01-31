@@ -12,9 +12,9 @@ import pygame
 
 import mapgen
 import mylogger
-from settings import IMGSIZE, ROTATING, IMPASSABLE
+from settings import IMGSIZE, ROTATING, IMPASSABLE, LOGLEVEL
 
-logger = mylogger.setup_custom_logger('root')
+logger = mylogger.setup_custom_logger('root', LOGLEVEL)
 
 
 class Map:

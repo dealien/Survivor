@@ -3,7 +3,7 @@ import logging
 import coloredlogs
 
 
-def setup_custom_logger(name):
+def setup_custom_logger(name, level=0):
     """
     
 
@@ -15,7 +15,14 @@ def setup_custom_logger(name):
     handler = logging.FileHandler('main.log')
     handler.setFormatter(formatter)
     logger = logging.getLogger(name)
-    logger.setLevel(logging.DEBUG)
+    if level is 3:
+        logger.setLevel(logging.DEBUG)
+    elif level is 2:
+        logger.setLevel(logging.INFO)
+    elif level is 1:
+        logger.setLevel(logging.WARNING)
+    else:
+        logger.setLevel(logging.CRITICAL)
     # Avoid adding duplicate handlers
     if len(logger.handlers) > 0:
         for h in logger.handlers:
