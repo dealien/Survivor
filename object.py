@@ -116,11 +116,14 @@ class Player(Object):
         """
         newx = int(new_position[0] / game.player.rect[2])
         newy = int(new_position[1] / game.player.rect[3])
-        target = game.map.tilemap[newy][newx]
-        if (not target.collisions and target.passable) and \
-                -1 < new_position[0] < game.player.rect[3] * game.map.width and \
-                -1 < new_position[1] < game.player.rect[3] * game.map.height:
-            position = new_position
+        if -1 < new_position[0] < game.player.rect[3] * game.map.width \
+                and -1 < new_position[1] < game.player.rect[3] * game.map.height:
+            target = game.map.tilemap[newy][newx]
+            if not target.collisions and target.passable:
+                position = new_position
+            else:
+                game.play_sound('hit_wall.wav')
+                position = old_position
         else:
             game.play_sound('hit_wall.wav')
             position = old_position
