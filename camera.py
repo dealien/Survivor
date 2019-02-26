@@ -12,7 +12,7 @@ class Camera(object):
         """
         Center camera on input object.
 
-       :param obj: the player or reference object
+        :param obj: the player or reference object
 
         """
         self.x_shift = 0 - obj.x

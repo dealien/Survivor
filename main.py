@@ -7,6 +7,7 @@ from game import Game, draw_debug_overlay, get_debug_info_at_pos
 from settings import *
 from settings import logger
 
+# TODO: Include the test run in a proper test
 testrun = False
 for i in sys.argv:
     if "--test-run" in i:
@@ -65,7 +66,7 @@ debug_overlay_enabled = True
 while game.running:
     if testrun and time.time() > timeout:
         t = sum(render_times) / len(render_times)
-        logger.info('Average time to render frames: ' + str(t))
+        print('Average time to render frames: ' + str(t))
         break
     events = pygame.event.get()
     for event in events:
