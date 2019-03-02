@@ -12,7 +12,7 @@ import pygame
 
 import mapgen
 import mylogger
-from settings import IMGSIZE, ROTATING, IMPASSABLE, LOGLEVEL
+from settings import IMGSIZE, RANDTEXTURE, IMPASSABLE, LOGLEVEL, GRAPHICS
 
 logger = mylogger.setup_custom_logger('root', LOGLEVEL)
 
@@ -63,19 +63,24 @@ class Tile:
     Holds information about a specific tile on the map.
     """
 
-    def __init__(self, material, image, x, y):
+    def __init__(self, material, x, y):
         """
         :param material: The name of the material
-        :param image: The name of the image to be used when rendering the tile
         :param x: The x position on the map
         :param y: The y position on the map
         """
         self.material = material
         # Rotate the texture if necessary
-        if material in ROTATING:
+        if material in RANDTEXTURE:
+            images = []
+            for i in GRAPHICS:
+                if material in i:
+                    images.append(GRAPHICS[i])
+            image = random.choice(images)
             self.rot = random.randint(0, 3) * 90
             self.texture = pygame.transform.rotate(image, self.rot)
         else:
+            image = GRAPHICS[material]
             self.rot = 0
             self.texture = image
         self.collisions = False

@@ -81,8 +81,8 @@ for directory in dirs:
 logger.debug('GRAPHICS = \n' + pp.pformat(GRAPHICS))
 
 # Tiles
-# Tiles whose textures should rotate
-ROTATING = ['grass']
+# Tiles whose textures should be selected randomly from a list of possible textures
+RANDTEXTURE = ['grass']
 # Tiles that cannot be moved through
 IMPASSABLE = ['water']
 
