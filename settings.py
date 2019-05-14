@@ -95,5 +95,6 @@ files = [f for f in os.listdir(MUSDIR) if os.path.isfile(os.path.join(MUSDIR, f)
 for filename in files:
     SONGS.append(os.path.join(MUSDIR, filename))
 logger.debug('SONGS = \n' + pp.pformat(SONGS))
+logger.debug('Music loaded')
 
 logger.debug('Settings loaded successfully')
