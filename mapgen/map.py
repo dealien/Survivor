@@ -6,13 +6,10 @@
 .. moduleauthor:: Vyren
 
 """
-import random
-
-import pygame
 
 import mapgen
 import mylogger
-from settings import IMGSIZE, RANDTEXTURE, IMPASSABLE, LOGLEVEL, GRAPHICS
+from settings import LOGLEVEL
 
 logger = mylogger.setup_custom_logger('root', LOGLEVEL)
 
@@ -36,19 +33,21 @@ class Map:
         self.height = height
         self.width = width
         self.smoothness = smoothness
-        self.terrain = mapgen.generate_terrain(self.height, self.width, 4,
+        self.key = {
+            '*': 'water',
+            " ": 'grass',
+            "+": 'dirt',
+            "#": 'stone'
+        }
+        self.terrain = mapgen.generate_terrain(self.height, self.width, self.smoothness,
                                                {
                                                    '*': 0.4,
                                                    " ": 1,
                                                    "+": 0.75,
                                                    "#": 0.45
                                                })
-        self.tilemap = mapgen.generate_tilemap(self.terrain, {
-            '*': 'water',
-            " ": 'grass',
-            "+": 'dirt',
-            "#": 'stone'
-        })
+        self.tilemap = mapgen.generate_tilemap(self.terrain, self.key)
+        self.objectmap = mapgen.generate_objectmap(self.terrain, self.key)
         logger.debug('Map generated (height=%d, width=%d, smoothness=%d)' % (self.height, self.width, self.smoothness))
 
     def __repr__(self):
@@ -56,37 +55,3 @@ class Map:
 
     def __str__(self):
         return str(self.terrain)
-
-
-class Tile:
-    """
-    Holds information about a specific tile on the map.
-    """
-
-    def __init__(self, material, x, y):
-        """
-        :param material: The name of the material
-        :param x: The x position on the map
-        :param y: The y position on the map
-        """
-        self.material = material
-        # Rotate the texture if necessary
-        if material in RANDTEXTURE:
-            images = []
-            for i in GRAPHICS:
-                if material in i:
-                    images.append(GRAPHICS[i])
-            image = random.choice(images)
-            self.rot = random.randint(0, 3) * 90
-            self.texture = pygame.transform.rotate(image, self.rot)
-        else:
-            image = GRAPHICS[material]
-            self.rot = 0
-            self.texture = image
-        self.collisions = False
-        self.passable = self.material not in IMPASSABLE
-        self.durability = -1
-        self.rect = pygame.Rect(x, y, IMGSIZE, IMGSIZE)
-
-    def __str__(self):
-        return f'{self.material} tile at [{self.rect[0]}, {self.rect[1]}]'

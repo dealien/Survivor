@@ -80,7 +80,7 @@ def window_to_screen_pos(pos):
 
 
 def screen_to_window_pos(pos):
-    return pos[0]+(WINDOW_WIDTH / 2), (WINDOW_HEIGHT / 2) - pos[1]
+    return pos[0] + (WINDOW_WIDTH / 2), (WINDOW_HEIGHT / 2) - pos[1]
 
 
 def draw_debug_overlay(game):

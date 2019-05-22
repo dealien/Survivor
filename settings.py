@@ -44,11 +44,14 @@ logger.debug(f'WINDOW_WIDTH = {WINDOW_WIDTH}')
 logger.debug(f'WINDOW_HEIGHT = {WINDOW_HEIGHT}')
 
 # Mapgen settings
-MAP_HEIGHT = 50
 MAP_WIDTH = 50
+MAP_HEIGHT = 50
 MAP_SMOOTHNESS = 10
+MAP_OBJECTPOP = 0.2
+logger.debug(f'MAP_WIDTH = {MAP_WIDTH}')
 logger.debug(f'MAP_HEIGHT = {MAP_HEIGHT}')
-logger.debug(f'MAP_HEIGHT = {MAP_HEIGHT}')
+logger.debug(f'MAP_SMOOTHNESS = {MAP_SMOOTHNESS}')
+logger.debug(f'MAP_OBJECTPOP = {MAP_OBJECTPOP}')
 
 # Image Variables
 IMGSIZE = 16

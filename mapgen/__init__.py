@@ -1,8 +1,9 @@
+import math
 import random
 import time
 
 import mylogger
-from mapgen.map import Tile
+from object import Tile, Object
 from settings import *
 
 logger = mylogger.setup_custom_logger('root', LOGLEVEL)
@@ -328,7 +329,7 @@ def generate_tilemap(terrain, key):
     logger.debug('Generating tilemap...')
     tilemap_start = time.perf_counter()
 
-    # Create a blank slate to fill with terrain values
+    # Create a blank slate to fill with tiles
     tilemap = _create_blank(len(terrain), len(terrain[0]))
     # Iterate through every element in the terrain...
     x = 0
@@ -344,3 +345,36 @@ def generate_tilemap(terrain, key):
     logger.debug(f'Tilemap generated in {tilemap_end - tilemap_start} seconds')
     # Return the tilemap
     return tilemap
+
+
+def generate_objectmap(terrain, key):
+    logger.debug('Generating objects...')
+    objectmap_start = time.perf_counter()
+
+    # Create a blank slate to fill with terrain values
+    objectmap = _create_blank(len(terrain), len(terrain[0]))
+
+    # Calculate the total number of objects to generate
+    objectcount = math.floor(MAP_WIDTH * MAP_HEIGHT * MAP_OBJECTPOP)
+
+    objects = {
+        'shrub': 0.35,
+        'tree_stump': 0.1,
+        'rock': 0.2
+    }
+
+    for i in range(objectcount):
+        x = random.randint(0, MAP_WIDTH - 1)
+        y = random.randint(0, MAP_HEIGHT - 1)
+        if not terrain[x][y] == 'water':
+            pass
+        objname = _choose_value(objects)
+        objimage = GRAPHICS[objname]
+        obj = Object(objimage, x, y)
+        objectmap[x][y] = obj
+        pass
+
+    objectmap_end = time.perf_counter()
+    logger.debug(f'Objectmap generated in {objectmap_start - objectmap_end} seconds')
+    # Return the objectmap
+    return objectmap
