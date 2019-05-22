@@ -104,13 +104,25 @@ def draw_debug_overlay(game):
     text_player_pos_rect[0] = text_player_pos_x
     text_player_pos_rect[1] = 17
 
+    # text_obj_at_mouse_pos = game.small_font.render(f'Object: [{game.player.rect[0]}, {game.player.rect[1]}] '
+    #                                          f'({int(game.player.rect[0] / 16)}, {int(game.player.rect[1] / 16)}); '
+    #                                          f'facing {str(game.player.dir)} ({repr(game.player.dir)})'
+    #                                          , True, (255, 255, 255))
+    # text_obj_at_mouse_pos_rect = text_obj_at_mouse_pos.get_rect()
+    # text_obj_at_mouse_pos_x = w - text_obj_at_mouse_pos.get_width()
+    # text_obj_at_mouse_pos_rect[0] = text_obj_at_mouse_pos_x
+    # text_obj_at_mouse_pos_rect[1] = 17
+
     pygame.draw.rect(game.surface, (0, 0, 0), text_mouse_pos_rect)
     game.surface.blit(text_mouse_pos, text_mouse_pos_rect)
     pygame.draw.rect(game.surface, (0, 0, 0), text_player_pos_rect)
     game.surface.blit(text_player_pos, text_player_pos_rect)
+    # pygame.draw.rect(game.surface, (0, 0, 0), text_obj_at_mouse_pos)
+    # game.surface.blit(text_player_pos, text_obj_at_mouse_pos)
 
 
 def get_debug_info_at_pos(game, pos):
+    # TODO: Add this information to the debug overlay
     mx, my = game.camera.unapply(pos)
     mx = mx / 16
     my = my / 16
