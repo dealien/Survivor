@@ -358,21 +358,25 @@ def generate_objectmap(terrain, key):
     objectcount = math.floor(MAP_WIDTH * MAP_HEIGHT * MAP_OBJECTPOP)
 
     objects = {
-        'shrub': 0.35,
-        'tree_stump': 0.1,
-        'rock': 0.2
+        'shrub': 0.75,
+        'tree_stump': 0.05,
+        'rock': 0.07
+    }
+    objterrain = {
+        'shrub': ['grass'],
+        'tree_stump': ['grass'],
+        'rock': ['dirt']
     }
 
     for i in range(objectcount):
         x = random.randint(0, MAP_WIDTH - 1)
         y = random.randint(0, MAP_HEIGHT - 1)
-        if not terrain[x][y] == 'water':
-            pass
         objname = _choose_value(objects)
-        objimage = GRAPHICS[objname]
-        obj = Object(objimage, x, y)
-        objectmap[x][y] = obj
-        pass
+        # Restricts objects to certain kinds of terrain
+        if key[terrain[x][y]] in objterrain[objname]:
+            objimage = GRAPHICS[objname]
+            obj = Object(objimage, x, y)
+            objectmap[x][y] = obj
 
     objectmap_end = time.perf_counter()
     logger.debug(f'Objectmap generated in {objectmap_start - objectmap_end} seconds')

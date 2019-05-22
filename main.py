@@ -32,8 +32,11 @@ def render_all(game):
             # Set the x and y coordinates based on the number of pixels per tile image
             y = a * IMGSIZE
             x = b * IMGSIZE
-            # Draw from the perspective of the camera
+            # Draw tile from the perspective of the camera
             game.surface.blit(game.map.tilemap[a][b].texture, game.camera.apply((x, y)))
+            if game.map.objectmap[a][b] is not None:
+                # Draw object from the perspective of the camera
+                game.surface.blit(game.map.objectmap[a][b].image, game.camera.apply((x, y)))
     game.surface.blit(game.player.image, game.camera.apply(game.player))  # Draw the player
     if debug_overlay_enabled:
         draw_debug_overlay(game)
