@@ -71,6 +71,13 @@ logger.debug('Colors loaded')
 # Textures
 logger.debug('Loading graphics...')
 GRAPHICS = {}
+for file in os.listdir(IMGDIR):
+    filename = os.fsdecode(file)
+    if filename.endswith('.bmp') or filename.endswith('.png'):
+        GRAPHICS[filename[:-4]] = pygame.image.load(os.path.join(IMGDIR, filename)).convert_alpha()
+        continue
+    else:
+        continue
 directory = os.fsencode(IMGDIR)
 dirs = [name for name in os.listdir(IMGDIR) if os.path.isdir(os.path.join(IMGDIR, name))]
 for directory in dirs:
