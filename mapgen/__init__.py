@@ -1,57 +1,34 @@
+import math
 import random
 import time
 
 import mylogger
-from mapgen.map import Tile
+from object import Tile, Object
 from settings import *
 
-logger = mylogger.setup_custom_logger('root')
+logger = mylogger.setup_custom_logger('root', LOGLEVEL)
 
 
 def generate_terrain(width, height, smoothness, values):
-    """Generates and returns a new procedurally-generated terrain
+    """
+    Generates and returns a new procedurally-generated terrain
 
-    Generates and returns a two-dimensional list with the
-    passed values spread throughout in a terrain-like fashion.
+    Generates and returns a two-dimensional list with the passed
+    values spread throughout in a terrain-like fashion.
 
-    Args:
-        width: The width of the terrain to generate.
-        height: The height of the terrain to generate.
-        smoothness: The number of times to run the smoothing
+    :param width: The width of the terrain to generate.
+    :param height: The height of the terrain to generate.
+    :param smoothness: The number of times to run the smoothing
             algorithm on the terrain.
-        values: A dictionary containing the values to spread
+    :param values: A dictionary containing the values to spread
             throughout the terrain paired to their relative
             probabilities of appearing. For example:
-            {"X": 0.2442, "#": 0.2558, ".": 0.2442, " ": 0.2558}
-
-            In this example, "X" and "." are slightly less likely
-            to appear than "#" and " ".
-
-    Returns:
-        A two-dimensional list with the values spread in a
-        terrain-like fashion. For example, running this code:
-
-        > terrain = mapgen.generate_terrain(10, 10, 1, {"X": 0.2442,
-        >                                         "#": 0.2558,
-        >                                         ".": 0.2442,
-        >                                         " ": 0.2558})
-
-        ...can create a terrain that, when displayed, looks like:
-
-        .  .  .  .  .  .  .  .  X  X
-        #  .  .  .  .  .  .  .  X  X
-        #  .  .  .  .  .  .  .  X  X
-        #  #  #  #  #  .           X
-        #  #  #
-        #  #
-        #              X  X  X  X  X
-                    X  X  X  X  X  X
-                    X  X  X  X
-                    X  X  X
-
-    Raises:
-        ValueError: Mapgen terrains must be at least 3x3
+            ``{"X": 0.2442, "#": 0.2558, ".": 0.2442, " ": 0.2558}``
+            In this example, ``"X"`` and ``"."`` are slightly less likely
+            to appear than ``"#"`` or ``" "``.
+    :raises ValueError: Mapgen terrains must be at least 3x3
             (Attempted: (dimensions attempted)).
+
     """
     logger.debug('Generating terrain...')
     terrain_start = time.perf_counter()
@@ -72,22 +49,23 @@ def generate_terrain(width, height, smoothness, values):
         _smooth(terrain, values)
 
     terrain_end = time.perf_counter()
-    logger.debug(f'Terrain generated in {terrain_end-terrain_start} seconds')
+    logger.debug(f'Terrain generated in {terrain_end - terrain_start} seconds')
     # Return the terrain
     return terrain
 
 
 def _create_blank(width, height):
-    """Returns a 2D list filled with None elements.
+    """
+    Returns a 2D list filled with ``None`` elements.
 
     Creates and returns a list of lists of the given dimensions
-    filled with None elements.
+    filled with ``None`` elements.
 
-    Args:
-        width: The width of the blank terrain to generate.
-        height: The height of the blank terrain to generate.
+    :param width: The width of the blank terrain to generate.
+    :param height: The height of the blank terrain to generate.
+
     """
-    # Use a list comprehension to generate a blank of the given dimensions
+    # Use a list comprehension to generate a blank array of the given dimensions
     empty_terrain = [[None for i in range(width)] for j in range(height)]
 
     # Return the list
@@ -95,11 +73,12 @@ def _create_blank(width, height):
 
 
 def _create_noise(terrain, values):
-    """Fills the given terrain with noise made with the given values.
+    """
+    Fills the given terrain with noise made with the given values.
 
-    Args:
-        terrain: The terrain to fill with noise.
-        values: The values to create noise with.
+    :param terrain: The terrain to fill with noise.
+    :param values: The values to create noise with.
+
     """
     # For every row...
     for i in range(len(terrain)):
@@ -110,18 +89,17 @@ def _create_noise(terrain, values):
 
 
 def _choose_value(values):
-    """Chooses a value from the given values.
+    """
+    Chooses a value from the given values.
 
     This takes into account the respective probabilities
     of each value.
 
-    Args:
-        values: The dictionary from which to choose a value.
-            For example: {"X": 1, "#": 2}
-
-    Returns:
-        A weighted, but randomly chosen value from the given
+    :param values: The dictionary from which to choose a value.
+            For example: ``{"X": 1, "#": 2}``
+    :returns: A weighted, but randomly chosen value from the given
         dictionary.
+
     """
     # Find out maximum threshold (sum of all value probabilities)
     maximum = 0
@@ -145,18 +123,16 @@ def _choose_value(values):
 
 
 def _smooth(terrain, values):
-    """Smooths the terrain.
+    """
+    Smoothes the terrain.
 
     Iterates over the terrain by choosing random indices
     and setting said indices to the majority neighbor value.
 
-    Args:
-        terrain: The terrain to smooth.
-        values: The values of the terrain. These are used to
-            simplify computation in determine_value.
+    :param terrain: The terrain to smooth.
+    :param values: The values of the terrain. These are used to simplify computation in ``determine_value``.
+    :returns: A more smoothly-bordered terrain (less noisy).
 
-    Returns:
-        A more smoothly-bordered terrain (less noisy).
     """
     # Create list of unchecked indices
     indices = _generate_indices_list(terrain)
@@ -177,10 +153,12 @@ def _smooth(terrain, values):
 
 
 def _generate_indices_list(terrain):
-    """Returns a unordered list of valid coordinates for given terrain.
+    """
+    Returns a unordered list of valid coordinates for given terrain.
 
-    Args:
-        terrain: The terrain to find coordinates for.
+    :param terrain: The terrain to find coordinates for.
+    :returns: A scrambled list of indices
+
     """
     # Create list of ordered indices
     indices = []
@@ -199,11 +177,12 @@ def _generate_indices_list(terrain):
 
 
 def _get_neighbors(terrain, pos):
-    """Returns a list of a given element's neighbor values.
+    """
+    Returns a list of a given element's neighbor values.
 
-    Args:
-        terrain: The terrain to look for neighbors in.
-        pos: The position of the element to find neighbors for.
+    :param terrain: The terrain to look for neighbors in.
+    :param pos: The position of the element to find neighbors for.
+
     """
     # Split coordinates
     i, j = pos
@@ -284,12 +263,13 @@ def _get_neighbors(terrain, pos):
 
 
 def _determine_value(neighbors, values):
-    """Returns the value to set an element to based on its neighbors.
+    """
+    Returns the value to set an element to based on its neighbors.
 
-    Args:
-        neighbors: The neighbors of the element in question.
-        values: The values of the terrain. This is passed in so that
+    :param neighbors: The neighbors of the element in question.
+    :param values: The values of the terrain. This is passed in so that
             a new dictionary doesn't have to be created and added to.
+
     """
     # Create a dictionary to keep track of the amounts of each value
     counts = {value: 0 for value in values}
@@ -318,10 +298,11 @@ def _determine_value(neighbors, values):
 
 
 def display_terrain(terrain):
-    """Prints an ASCII representation of a given terrain to the console.
+    """
+    Prints an ASCII representation of a given terrain to the console.
 
-    Args:
-        terrain: The terrain to display to the console.
+    :param terrain: The terrain to display to the console.
+
     """
     # Iterate through every element in the terrain...
     for i in terrain:
@@ -333,30 +314,29 @@ def display_terrain(terrain):
 
 
 def generate_tilemap(terrain, key):
-    """Generates a 2D array of objects containing specific
+    """
+    Generates a 2D array of objects containing specific
     information for each tile on the map. The function uses a key to
     determine what symbols in the terrain map correspond with what
     tiles.
 
-    Args:
-        terrain: The terrain to convert into a tilemap.
-        key: An object list showing the symbols in the terrain
+    :param terrain: The terrain to convert into a tilemap.
+    :param key: An object list showing the symbols in the terrain
         map and their corresponding tiles.
+    :returns: The completed tilemap.
 
-    Returns:
-        The completed tilemap.
     """
     logger.debug('Generating tilemap...')
     tilemap_start = time.perf_counter()
 
-    # Create a blank slate to fill with terrain values
+    # Create a blank slate to fill with tiles
     tilemap = _create_blank(len(terrain), len(terrain[0]))
     # Iterate through every element in the terrain...
     x = 0
     y = 0
     for i in terrain:
         for j in i:
-            tilemap[x][y] = Tile(key[j],textures[key[j]],x,y)
+            tilemap[x][y] = Tile(key[j], x, y)
             y += 1
         x += 1
         y = 0
@@ -365,3 +345,40 @@ def generate_tilemap(terrain, key):
     logger.debug(f'Tilemap generated in {tilemap_end - tilemap_start} seconds')
     # Return the tilemap
     return tilemap
+
+
+def generate_objectmap(terrain, key):
+    logger.debug('Generating objects...')
+    objectmap_start = time.perf_counter()
+
+    # Create a blank slate to fill with terrain values
+    objectmap = _create_blank(len(terrain), len(terrain[0]))
+
+    # Calculate the total number of objects to generate
+    objectcount = math.floor(MAP_WIDTH * MAP_HEIGHT * MAP_OBJECTPOP)
+
+    objects = {
+        'shrub': 0.75,
+        'tree_stump': 0.05,
+        'rock': 0.07
+    }
+    objterrain = {
+        'shrub': ['grass'],
+        'tree_stump': ['grass'],
+        'rock': ['dirt']
+    }
+
+    for i in range(objectcount):
+        x = random.randint(0, MAP_WIDTH - 1)
+        y = random.randint(0, MAP_HEIGHT - 1)
+        objname = _choose_value(objects)
+        # Restricts objects to certain kinds of terrain
+        if key[terrain[x][y]] in objterrain[objname]:
+            objimage = GRAPHICS[objname]
+            obj = Object(objimage, x, y)
+            objectmap[x][y] = obj
+
+    objectmap_end = time.perf_counter()
+    logger.debug(f'Objectmap generated in {objectmap_start - objectmap_end} seconds')
+    # Return the objectmap
+    return objectmap

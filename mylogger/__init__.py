@@ -3,12 +3,26 @@ import logging
 import coloredlogs
 
 
-def setup_custom_logger(name):
-    formatter = logging.Formatter(fmt='%(asctime)s.%(msecs)03d %(module)s %(name)s[%(process)d] %(levelname)s %(message)s')
+def setup_custom_logger(name, level=0):
+    """
+
+
+    :param name: 
+
+    """
+    formatter = logging.Formatter(
+        fmt='%(asctime)s.%(msecs)03d %(module)s %(name)s[%(process)d] %(levelname)s %(message)s')
     handler = logging.FileHandler('main.log')
     handler.setFormatter(formatter)
     logger = logging.getLogger(name)
-    logger.setLevel(logging.DEBUG)
+    if level is 3:
+        logger.setLevel(logging.DEBUG)
+    elif level is 2:
+        logger.setLevel(logging.INFO)
+    elif level is 1:
+        logger.setLevel(logging.WARNING)
+    else:
+        logger.setLevel(logging.CRITICAL)
     # Avoid adding duplicate handlers
     if len(logger.handlers) > 0:
         for h in logger.handlers:
