@@ -101,8 +101,7 @@ def draw_debug_overlay(game):
 
     text_player_pos = game.small_font.render(f'Player: [{game.player.rect[0]}, {game.player.rect[1]}] '
                                              f'({int(game.player.rect[0] / 16)}, {int(game.player.rect[1] / 16)}); '
-                                             f'facing {str(game.player.dir)} ({repr(game.player.dir)})'
-                                             , True, (255, 255, 255))
+                                             f'facing {str(game.player.dir)} ({repr(game.player.dir)})', True, (255, 255, 255))
     text_player_pos_rect = text_player_pos.get_rect()
     text_player_pos_x = w - text_player_pos.get_width()
     text_player_pos_rect[0] = text_player_pos_x

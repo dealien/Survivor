@@ -18,7 +18,7 @@ class Map:
     """
     Stores information about the map, including terrain,
     tilemap, and the arguments used to generate the map.
-    
+
     Uses ``mapgen.generate_terrain()`` to generate terrain and
     ``mapgen.generate_tilemap()`` to generate the tilemap.
 
