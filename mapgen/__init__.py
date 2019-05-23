@@ -12,7 +12,7 @@ logger = mylogger.setup_custom_logger('root', LOGLEVEL)
 def generate_terrain(width, height, smoothness, values):
     """
     Generates and returns a new procedurally-generated terrain
-    
+
     Generates and returns a two-dimensional list with the passed
     values spread throughout in a terrain-like fashion.
 
@@ -57,7 +57,7 @@ def generate_terrain(width, height, smoothness, values):
 def _create_blank(width, height):
     """
     Returns a 2D list filled with ``None`` elements.
-    
+
     Creates and returns a list of lists of the given dimensions
     filled with ``None`` elements.
 
@@ -91,7 +91,7 @@ def _create_noise(terrain, values):
 def _choose_value(values):
     """
     Chooses a value from the given values.
-    
+
     This takes into account the respective probabilities
     of each value.
 
@@ -125,7 +125,7 @@ def _choose_value(values):
 def _smooth(terrain, values):
     """
     Smoothes the terrain.
-    
+
     Iterates over the terrain by choosing random indices
     and setting said indices to the majority neighbor value.
 

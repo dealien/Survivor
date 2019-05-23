@@ -5,7 +5,7 @@ import coloredlogs
 
 def setup_custom_logger(name, level=0):
     """
-    
+
 
     :param name: 
 
