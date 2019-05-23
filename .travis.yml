@@ -6,8 +6,10 @@ install:
   - pip-sync
   - pip install coverage
   - pip install codacy-coverage
+  - pip install codecov
 script:
   - python main.py --test-run
   - coverage run main.py --test-run
   - coverage xml
   - python-codacy-coverage -r coverage.xml
+  - codecov

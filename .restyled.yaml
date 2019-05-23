@@ -1,0 +1,11 @@
+---
+enabled: true
+auto: false
+remote_files: []
+comments: false
+statuses: true
+request_review: null
+labels: []
+restylers:
+  - autopep8
+  - prettier
