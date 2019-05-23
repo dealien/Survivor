@@ -24,11 +24,13 @@ ADIR = os.path.join(ROOTDIR, 'assets')
 IMGDIR = os.path.join(ADIR, 'images')
 AUDDIR = os.path.join(ADIR, 'sounds')
 MUSDIR = os.path.join(ADIR, 'music')
+FONDIR = os.path.join(ADIR,'fonts')
 logger.debug(f'ROOTDIR = {ROOTDIR}')
 logger.debug(f'ADIR = {ADIR}')
 logger.debug(f'IMGDIR = {IMGDIR}')
 logger.debug(f'AUDDIR = {AUDDIR}')
 logger.debug(f'MUSICDIR = {MUSDIR}')
+logger.debug(f'FONDIR = {FONDIR}')
 
 # Constants
 # Directions

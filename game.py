@@ -7,8 +7,7 @@ import pygame
 from camera import Camera
 from mapgen.map import Map
 from object import Player
-from settings import WINDOW_WIDTH, WINDOW_HEIGHT, GRAPHICS, MAP_WIDTH, IMGSIZE, MAP_HEIGHT, MAP_SMOOTHNESS, ADIR, \
-    AUDDIR, SOUNDS, SONGS
+from settings import *
 from settings import logger
 
 
@@ -23,9 +22,9 @@ class Game:
         new_map = Map(MAP_HEIGHT, MAP_WIDTH, MAP_SMOOTHNESS)
         self.map = new_map
         self.camera = Camera()
-        self.font = pygame.font.Font(os.path.join(ADIR, 'Sarabun-Regular.ttf'), 18)
-        self.small_font = pygame.font.Font(os.path.join(ADIR, 'RobotoMono-Bold.ttf'), 12)
-        self.title_font = pygame.font.Font(os.path.join(ADIR, 'PT_Sans-Web-Regular.ttf'), 36)
+        self.font = pygame.font.Font(os.path.join(FONDIR, 'Sarabun-Regular.ttf'), 18)
+        self.small_font = pygame.font.Font(os.path.join(FONDIR, 'RobotoMono-Bold.ttf'), 12)
+        self.title_font = pygame.font.Font(os.path.join(FONDIR, 'PT_Sans-Web-Regular.ttf'), 36)
         self.paused = False
         self.running = True
 
