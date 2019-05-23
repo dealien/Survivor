@@ -13,7 +13,6 @@ for i in sys.argv:
     if "--test-run" in i:
         testrun = True
         logger.warning("Beginning test run...")
-        os.environ["SDL_VIDEODRIVER"] = "dummy"
         logger.debug(f"SDL_VIDEODRIVER = {os.environ.get('SDL_VIDEODRIVER')}")
 
 
@@ -48,6 +47,8 @@ def render_all(game):
 
 
 pygame.init()
+if pygame.mixer.get_init() is None:
+    logger.warning('No available audio device. Audio output disabled.')
 game = Game()
 SONG_END = pygame.USEREVENT + 1
 pygame.mixer.music.set_endevent(SONG_END)

@@ -58,7 +58,14 @@ IMGSIZE = 16
 logger.debug(f'IMGSIZE = {IMGSIZE}')
 
 # Surface
-windowSurface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), 0, 32)
+# Allows the program to continue running on headless platforms
+try:
+    windowSurface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), 0, 32)
+except pygame.error as e:
+    logger.error(e)
+    logger.warning('Running with dummy display.')
+    os.environ["SDL_VIDEODRIVER"] = "dummy"
+    windowSurface = pygame.display.set_mode((1, 1))
 
 # Colors
 logger.debug('Loading colors...')

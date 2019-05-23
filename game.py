@@ -41,34 +41,38 @@ class Game:
 
     @current_volume.getter
     def current_volume(self):
-        if not self._current_volume == pygame.mixer.music.get_volume():
-            self._current_volume = pygame.mixer.music.get_volume()
+        if not pygame.mixer.get_init() is None:
+            if not self._current_volume == pygame.mixer.music.get_volume():
+                self._current_volume = pygame.mixer.music.get_volume()
         return self._current_volume
 
     @current_volume.setter
     def current_volume(self, val):
         self._current_volume = val
-        pygame.mixer.music.set_volume(self._current_volume)
+        if not pygame.mixer.get_init() is None:
+            pygame.mixer.music.set_volume(self._current_volume)
 
     def play_sound(self, path):
-        if not ('\\' in path and not ('/' in path)):
-            path = os.path.join(AUDDIR, path)
-        sound = SOUNDS.get(path)
-        if sound is None:
-            canonicalized_path = path.replace('/', os.sep).replace('\\', os.sep)
-            sound = pygame.mixer.Sound(canonicalized_path)
-            SOUNDS[path] = sound
-        sound.set_volume(self.current_volume)
-        sound.play()
+        if not pygame.mixer.get_init() is None:
+            if not ('\\' in path and not ('/' in path)):
+                path = os.path.join(AUDDIR, path)
+            sound = SOUNDS.get(path)
+            if sound is None:
+                canonicalized_path = path.replace('/', os.sep).replace('\\', os.sep)
+                sound = pygame.mixer.Sound(canonicalized_path)
+                SOUNDS[path] = sound
+            sound.set_volume(self.current_volume)
+            sound.play()
 
     def play_next_song(self):
-        next_song = random.choice(SONGS)
-        while next_song == self.current_song:
+        if not pygame.mixer.get_init() is None:
             next_song = random.choice(SONGS)
-        self.current_song = next_song
-        pygame.mixer.music.load(next_song)
-        pygame.mixer.music.play()
-        logger.debug('Now playing ' + os.path.split(self.current_song)[1])
+            while next_song == self.current_song:
+                next_song = random.choice(SONGS)
+            self.current_song = next_song
+            pygame.mixer.music.load(next_song)
+            pygame.mixer.music.play()
+            logger.debug('Now playing ' + os.path.split(self.current_song)[1])
 
 
 def round_down(num, divisor):
