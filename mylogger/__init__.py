@@ -10,8 +10,9 @@ def setup_custom_logger(name, level=0):
     :param name: 
 
     """
+    logformat = '%(asctime)s %(name)s[%(process)d] %(module)s %(levelname)s %(message)s'
     formatter = logging.Formatter(
-        fmt='%(asctime)s.%(msecs)03d %(module)s %(name)s[%(process)d] %(levelname)s %(message)s')
+        fmt=logformat)
     handler = logging.FileHandler('main.log')
     handler.setFormatter(formatter)
     logger = logging.getLogger(name)
@@ -31,5 +32,5 @@ def setup_custom_logger(name, level=0):
     else:
         logger.addHandler(handler)
     coloredlogs.install(level='DEBUG',
-                        fmt='%(asctime)s.%(msecs)03d %(module)s %(name)s[%(process)d] %(levelname)s %(message)s')
+                        fmt=logformat)
     return logger
