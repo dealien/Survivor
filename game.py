@@ -28,28 +28,22 @@ class Game:
         self.paused = False
         self.running = True
 
-        # Sounds
-        self.current_volume = 0.05
-        self.music_paused = False
+        self.current_volume = 0.3
         self.current_song = None
         self.play_next_song()
 
     @property
     def current_volume(self):
-        return self._current_volume
-
-    @current_volume.getter
-    def current_volume(self):
         if not pygame.mixer.get_init() is None:
-            if not self._current_volume == pygame.mixer.music.get_volume():
-                self._current_volume = pygame.mixer.music.get_volume()
-        return self._current_volume
+            return pygame.mixer.music.get_volume()
+        else:
+            return 0
 
     @current_volume.setter
     def current_volume(self, val):
-        self._current_volume = val
         if not pygame.mixer.get_init() is None:
-            pygame.mixer.music.set_volume(self._current_volume)
+            pygame.mixer.music.set_volume(val)
+            settings.current_volume = val
 
     def play_sound(self, path):
         if not pygame.mixer.get_init() is None:
@@ -100,7 +94,8 @@ def draw_debug_overlay(game):
 
     text_player_pos = game.small_font.render(f'Player: [{game.player.rect[0]}, {game.player.rect[1]}] '
                                              f'({int(game.player.rect[0] / 16)}, {int(game.player.rect[1] / 16)}); '
-                                             f'facing {str(game.player.dir)} ({repr(game.player.dir)})', True, (255, 255, 255))
+                                             f'facing {str(game.player.dir)} ({repr(game.player.dir)})', True,
+                                             (255, 255, 255))
     text_player_pos_rect = text_player_pos.get_rect()
     text_player_pos_x = w - text_player_pos.get_width()
     text_player_pos_rect[0] = text_player_pos_x

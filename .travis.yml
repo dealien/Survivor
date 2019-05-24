@@ -1,5 +1,7 @@
 language: python
 cache: pip
+notifications:
+  slack: dealien-dev:vtzdndxTlMJtUsVtFS6yfjVN
 python:
   - "3.6"
 install:

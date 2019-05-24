@@ -131,7 +131,7 @@ class Settings:
         self.window_height = 0
         self.debug_overlay_enabled = False
         self.current_volume = 0.0
-        self.music_paused = False
+        self.music_muted = False
 
         self.load_config()
 
@@ -143,7 +143,7 @@ class Settings:
             'window_width': self.window_width,
             'window_height': self.window_height,
             'current_volume': self.current_volume,
-            'music_paused': self.music_paused
+            'music_muted': self.music_muted
         }
         with open(CONFIGPATH, 'w') as outfile:
             json.dump(d, outfile)
@@ -158,14 +158,16 @@ class Settings:
                 self.window_width = data['window_width']
                 self.window_height = data['window_height']
                 self.current_volume = data['current_volume']
-                self.music_paused = data['music_paused']
+                self.music_muted = data['music_muted']
 
             logger.warn('Settings loaded from ' + CONFIGPATH)
-        except FileNotFoundError:
-            # If no config file exists, load default settings
-            self.log_level = 1
+        except:
+            # If no config file exists, or the file fails to load, use default settings
+            self.log_level = 3
             self.window_width = 900
             self.window_height = 900
+            self.current_volume = 0.3
+            self.music_muted = False
 
             logger.warn('No config file found. Loaded default settings.')
             self.save_config()

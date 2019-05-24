@@ -62,6 +62,8 @@ if testrun:
 #   - Hold shift while pressing a movement key to turn in place
 # - E, Z, or numpad 5 to interact
 # - Backslash to toggle debug overlay
+# - M to toggle mute
+
 while game.running:
     if testrun and time.time() > timeout:
         t = sum(render_times) / len(render_times)
@@ -108,6 +110,15 @@ while game.running:
             # Toggle debug overlay
             if event.key == K_BACKSLASH:
                 settings.debug_overlay_enabled = not settings.debug_overlay_enabled
+
+            if event.key == K_m:
+                if not settings.music_muted:
+                    pygame.mixer.music.set_volume(0)
+                    logger.debug('Music muted')
+                else:
+                    pygame.mixer.music.set_volume(settings.current_volume)
+                    logger.debug('Music unmuted')
+                settings.music_muted = not settings.music_muted
 
         # When the current song ends, play the next one
         if event.type == SONG_END:
