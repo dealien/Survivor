@@ -34,7 +34,7 @@ def render_all():
                 # Draw object from the perspective of the camera
                 game.surface.blit(game.map.objectmap[a][b].image, game.camera.apply((x, y)))
     game.surface.blit(game.player.image, game.camera.apply(game.player))  # Draw the player
-    if debug_overlay_enabled:
+    if settings.debug_overlay_enabled:
         draw_debug_overlay(game)
     pygame.display.update()
     render_end = time.perf_counter()
@@ -54,8 +54,6 @@ pygame.mixer.music.set_endevent(SONG_END)
 if testrun:
     timeout = time.time() + 10
     render_times = []
-
-debug_overlay_enabled = True
 
 # Main game loop. Detect keyboard input for character movements, etc.
 # Controls:
@@ -109,7 +107,7 @@ while game.running:
 
             # Toggle debug overlay
             if event.key == K_BACKSLASH:
-                debug_overlay_enabled = not debug_overlay_enabled
+                settings.debug_overlay_enabled = not settings.debug_overlay_enabled
 
         # When the current song ends, play the next one
         if event.type == SONG_END:

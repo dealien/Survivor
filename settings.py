@@ -117,3 +117,16 @@ logger.debug('SONGS = \n' + pp.pformat(SONGS))
 logger.debug('Music loaded')
 
 logger.debug('Settings loaded successfully')
+
+
+class Settings:
+    def __init__(self):
+        self.LOGLEVEL = LOGLEVEL
+        self.WINDOW_WIDTH = WINDOW_WIDTH
+        self.WINDOW_HEIGHT = WINDOW_HEIGHT
+        self.debug_overlay_enabled = True
+
+    # TODO: Use @property getter and setter for changes to WINDOW_WIDTH and WINDOW_HEIGHT
+
+
+settings = Settings()
