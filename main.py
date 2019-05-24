@@ -16,12 +16,9 @@ for i in sys.argv:
         logger.debug(f"SDL_VIDEODRIVER = {os.environ.get('SDL_VIDEODRIVER')}")
 
 
-def render_all(game):
+def render_all():
     """
     Updates the display output, drawing all tiles, objects, and the player.
-
-    :param game: the main game object
-
     """
     render_start = time.perf_counter()
     game.camera.update(game.player)
@@ -122,6 +119,6 @@ while game.running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             get_debug_info_at_pos(game, pygame.mouse.get_pos())
 
-    render_all(game)
+    render_all()
     game.clock.tick(50)
 pygame.quit()
