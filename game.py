@@ -12,7 +12,7 @@ from settings import logger
 
 
 class Game:
-    """Main game object. Stores persistent information like settings, the map, the player, etc."""
+    """Main game object. Stores persistent information, the map, the player, etc."""
 
     def __init__(self):
         self.clock = pygame.time.Clock()

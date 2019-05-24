@@ -125,19 +125,25 @@ logger.info('Music loaded.')
 
 class Settings:
     def __init__(self):
-        self.LOGLEVEL = 0
-        self.WINDOW_WIDTH = 0
-        self.WINDOW_HEIGHT = 0
+
+        self.log_level = 0
+        self.window_width = 0
+        self.window_height = 0
         self.debug_overlay_enabled = False
+        self.current_volume = 0.0
+        self.music_paused = False
+
         self.load_config()
 
-    # TODO: Use @property getter and setter for changes to WINDOW_WIDTH and WINDOW_HEIGHT
+    # TODO: Use @property getter and setter for changes to window_width and window_height
 
     def save_config(self):
         d = {
-            'LOGLEVEL': self.LOGLEVEL,
-            'WINDOW_WIDTH': self.WINDOW_WIDTH,
-            'WINDOW_HEIGHT': self.WINDOW_HEIGHT
+            'log_level': self.log_level,
+            'window_width': self.window_width,
+            'window_height': self.window_height,
+            'current_volume': self.current_volume,
+            'music_paused': self.music_paused
         }
         with open(CONFIGPATH, 'w') as outfile:
             json.dump(d, outfile)
@@ -147,15 +153,20 @@ class Settings:
         try:
             with open(CONFIGPATH) as json_file:
                 data = json.load(json_file)
-                self.LOGLEVEL = data['LOGLEVEL']
-                self.WINDOW_WIDTH = data['WINDOW_WIDTH']
-                self.WINDOW_HEIGHT = data['WINDOW_HEIGHT']
+
+                self.log_level = data['log_level']
+                self.window_width = data['window_width']
+                self.window_height = data['window_height']
+                self.current_volume = data['current_volume']
+                self.music_paused = data['music_paused']
+
             logger.warn('Settings loaded from ' + CONFIGPATH)
         except FileNotFoundError:
             # If no config file exists, load default settings
-            self.LOGLEVEL = 1
-            self.WINDOW_WIDTH = 900
-            self.WINDOW_HEIGHT = 900
+            self.log_level = 1
+            self.window_width = 900
+            self.window_height = 900
+
             logger.warn('No config file found. Loaded default settings.')
             self.save_config()
 
