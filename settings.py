@@ -147,7 +147,7 @@ class Settings:
         }
         with open(CONFIGPATH, 'w') as outfile:
             json.dump(d, outfile)
-        logger.debug('Settings saved to ' + CONFIGPATH)
+        logger.info('Settings saved to ' + CONFIGPATH)
 
     def load_config(self):
         try:
@@ -160,7 +160,7 @@ class Settings:
                 self.current_volume = data['current_volume']
                 self.music_muted = data['music_muted']
 
-            logger.warn('Settings loaded from ' + CONFIGPATH)
+            logger.info('Settings loaded from ' + CONFIGPATH)
         except:
             # If no config file exists, or the file fails to load, use default settings
             self.log_level = 3

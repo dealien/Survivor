@@ -82,44 +82,38 @@ def screen_to_window_pos(pos):
 
 def draw_debug_overlay(game):
     mouse_pos = pygame.mouse.get_pos()
-    w, h = pygame.display.get_surface().get_size()
     mouse_from_center = window_to_screen_pos(mouse_pos)
+    i = get_debug_info_at_pos(game, pygame.mouse.get_pos())
+    tile_info = str(i[0])
 
-    text_mouse_pos = game.small_font.render(
-        f'Mouse: [{mouse_pos[0]}, {mouse_pos[1]}], [{mouse_from_center[0]}, {mouse_from_center[1]}]', True,
-        (255, 255, 255))
-    text_mouse_pos_rect = text_mouse_pos.get_rect()
-    text_mouse_pos_x = w - text_mouse_pos.get_width()
-    text_mouse_pos_rect[0] = text_mouse_pos_x
+    debug_lines = []
+    debug_lines.append(f'Mouse: [{mouse_pos[0]}, {mouse_pos[1]}], [{mouse_from_center[0]}, {mouse_from_center[1]}]')
+    debug_lines.append(tile_info)
+    debug_lines.append(f'Player: [{game.player.rect[0]}, {game.player.rect[1]}] '
+                       f'({int(game.player.rect[0] / 16)}, {int(game.player.rect[1] / 16)}); '
+                       f'facing {str(game.player.dir)} ({repr(game.player.dir)})')
+    debug_lines.append(f'Object: [{game.player.rect[0]}, {game.player.rect[1]}] '
+                       f'({int(game.player.rect[0] / 16)}, {int(game.player.rect[1] / 16)}); '
+                       f'facing {str(game.player.dir)} ({repr(game.player.dir)})')
 
-    text_player_pos = game.small_font.render(f'Player: [{game.player.rect[0]}, {game.player.rect[1]}] '
-                                             f'({int(game.player.rect[0] / 16)}, {int(game.player.rect[1] / 16)}); '
-                                             f'facing {str(game.player.dir)} ({repr(game.player.dir)})', True,
-                                             (255, 255, 255))
-    text_player_pos_rect = text_player_pos.get_rect()
-    text_player_pos_x = w - text_player_pos.get_width()
-    text_player_pos_rect[0] = text_player_pos_x
-    text_player_pos_rect[1] = 17
+    voffset = 0
+    w, h = pygame.display.get_surface().get_size()
 
-    # text_obj_at_mouse_pos = game.small_font.render(f'Object: [{game.player.rect[0]}, {game.player.rect[1]}] '
-    #                                          f'({int(game.player.rect[0] / 16)}, {int(game.player.rect[1] / 16)}); '
-    #                                          f'facing {str(game.player.dir)} ({repr(game.player.dir)})'
-    #                                          , True, (255, 255, 255))
-    # text_obj_at_mouse_pos_rect = text_obj_at_mouse_pos.get_rect()
-    # text_obj_at_mouse_pos_x = w - text_obj_at_mouse_pos.get_width()
-    # text_obj_at_mouse_pos_rect[0] = text_obj_at_mouse_pos_x
-    # text_obj_at_mouse_pos_rect[1] = 17
+    for line in debug_lines:
+        debug_line = game.small_font.render(line, True, (255, 255, 255))
+        debug_line_rect = debug_line.get_rect()
+        debug_line_x = w - debug_line.get_width()
+        debug_line_rect[0] = debug_line_x
+        debug_line_rect[1] = voffset
 
-    pygame.draw.rect(game.surface, (0, 0, 0), text_mouse_pos_rect)
-    game.surface.blit(text_mouse_pos, text_mouse_pos_rect)
-    pygame.draw.rect(game.surface, (0, 0, 0), text_player_pos_rect)
-    game.surface.blit(text_player_pos, text_player_pos_rect)
-    # pygame.draw.rect(game.surface, (0, 0, 0), text_obj_at_mouse_pos)
-    # game.surface.blit(text_player_pos, text_obj_at_mouse_pos)
+        pygame.draw.rect(game.surface, (0, 0, 0), debug_line_rect)
+        game.surface.blit(debug_line, debug_line_rect)
+
+        voffset += 17
 
 
 def get_debug_info_at_pos(game, pos):
-    # TODO: Add this information to the debug overlay
+    # TODO: Add get_debug_info_at_pos() information to the debug overlay
     mx, my = game.camera.unapply(pos)
     mx = mx / 16
     my = my / 16
@@ -128,7 +122,6 @@ def get_debug_info_at_pos(game, pos):
     selected_tile = None
     try:
         selected_tile = game.map.tilemap[imy][imx]
-        logger.debug(selected_tile)
     except IndexError:
-        logger.warning(f'Coordinates out of range: [{imx}, {imy}]')
+        pass
     return selected_tile, mx, my

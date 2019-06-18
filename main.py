@@ -124,10 +124,6 @@ while game.running:
         if event.type == SONG_END:
             game.play_next_song()
 
-        # Get debug information from clicked objects
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            get_debug_info_at_pos(game, pygame.mouse.get_pos())
-
     render_all()
     game.clock.tick(50)
 pygame.quit()
