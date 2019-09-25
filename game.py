@@ -113,7 +113,6 @@ def draw_debug_overlay(game):
 
 
 def get_debug_info_at_pos(game, pos):
-    # TODO: Add get_debug_info_at_pos() information to the debug overlay
     mx, my = game.camera.unapply(pos)
     mx = mx / 16
     my = my / 16
