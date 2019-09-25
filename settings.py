@@ -162,6 +162,7 @@ class Settings:
 
             logger.info('Settings loaded from ' + CONFIGPATH)
         except:
+            # TODO: Create function to reset settings to their default values and use it here
             # If no config file exists, or the file fails to load, use default settings
             self.log_level = 3
             self.window_width = 900
