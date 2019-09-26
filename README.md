@@ -12,6 +12,17 @@ Dependencies are managed using [`pip-tools`](https://pypi.org/project/pip-tools/
 
 Docs generated using [Sphinx](http://www.sphinx-doc.org/en/1.6/index.html#). 
 
+## Controls
+
+|Action|Key(s)|
+|--------|---|
+|Movement|<kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>, arrow keys, or numpad <kbd>2</kbd><kbd>4</kbd><kbd>6</kbd><kbd>8</kbd> (hold <kbd>Shift</kbd> to turn in place)|
+|Interact|<kbd>E</kbd>, <kbd>Z</kbd>, or numpad <kbd>5</kbd>|
+|Quit game|<kbd>Esc</kbd>|
+|Mute sound|<kbd>M</kbd>|
+|Toggle debug overlay|<kbd>\\</kbd>|
+
+
 ## Credits
 
 I created most of the assets used in this project myself. The rest I got from the following sources:  
