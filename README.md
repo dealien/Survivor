@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/dealien/Survivor.svg?branch=master)](https://travis-ci.org/dealien/Survivor)
+[![codecov](https://codecov.io/gh/dealien/Survivor/branch/master/graph/badge.svg)](https://codecov.io/gh/dealien/Survivor)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/435436c67a8e4a9fbe494da802cddb43)](https://www.codacy.com/app/dealien/Survivor?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dealien/Survivor&amp;utm_campaign=Badge_Grade)
+
 # Survivor
 
 A top-down open-world survival game written in Python.  

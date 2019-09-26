@@ -1,3 +1,4 @@
+import json
 import os
 import pprint
 
@@ -11,7 +12,7 @@ main_log = open('main.log', 'w')
 logger = mylogger.setup_custom_logger('root', LOGLEVEL)
 pp = pprint.PrettyPrinter(indent=4)
 
-logger.debug('Loading settings...')
+logger.info('Loading settings...')
 
 if os.name == 'posix':
     # Linux
@@ -31,6 +32,10 @@ logger.debug(f'IMGDIR = {IMGDIR}')
 logger.debug(f'AUDDIR = {AUDDIR}')
 logger.debug(f'MUSICDIR = {MUSDIR}')
 logger.debug(f'FONDIR = {FONDIR}')
+
+# Config file location
+CONFIGPATH = os.path.join(ROOTDIR, 'config.json')
+logger.debug(f'CONFIGPATH = {CONFIGPATH}')
 
 # Constants
 # Directions
@@ -70,15 +75,15 @@ except pygame.error as e:
     windowSurface = pygame.display.set_mode((1, 1))
 
 # Colors
-logger.debug('Loading colors...')
+logger.info('Loading colors...')
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 DARKWALL = (0, 0, 100)
 DARKFLOOR = (50, 50, 150)
-logger.debug('Colors loaded')
+logger.info('Colors loaded.')
 
 # Textures
-logger.debug('Loading graphics...')
+logger.info('Loading graphics...')
 GRAPHICS = {}
 for file in os.listdir(IMGDIR):
     filename = os.fsdecode(file)
@@ -98,6 +103,7 @@ for directory in dirs:
         else:
             continue
 logger.debug('GRAPHICS = \n' + pp.pformat(GRAPHICS))
+logger.info('Graphics loaded.')
 
 # Tiles
 # Tiles whose textures should be selected randomly from a list of possible textures
@@ -108,12 +114,66 @@ IMPASSABLE = ['water']
 SOUNDS = {}
 
 # Music
-logger.debug('Loading music...')
+logger.info('Loading music...')
 SONGS = []
 files = [f for f in os.listdir(MUSDIR) if os.path.isfile(os.path.join(MUSDIR, f))]
 for filename in files:
     SONGS.append(os.path.join(MUSDIR, filename))
 logger.debug('SONGS = \n' + pp.pformat(SONGS))
-logger.debug('Music loaded')
+logger.info('Music loaded.')
 
-logger.debug('Settings loaded successfully')
+
+class Settings:
+    def __init__(self):
+
+        self.log_level = 0
+        self.window_width = 0
+        self.window_height = 0
+        self.debug_overlay_enabled = False
+        self.current_volume = 0.0
+        self.music_muted = False
+
+        self.load_config()
+
+    # TODO: Use @property getter and setter for changes to window_width and window_height
+
+    def save_config(self):
+        d = {
+            'log_level': self.log_level,
+            'window_width': self.window_width,
+            'window_height': self.window_height,
+            'current_volume': self.current_volume,
+            'music_muted': self.music_muted
+        }
+        with open(CONFIGPATH, 'w') as outfile:
+            json.dump(d, outfile)
+        logger.info('Settings saved to ' + CONFIGPATH)
+
+    def load_config(self):
+        try:
+            with open(CONFIGPATH) as json_file:
+                data = json.load(json_file)
+
+                self.log_level = data['log_level']
+                self.window_width = data['window_width']
+                self.window_height = data['window_height']
+                self.current_volume = data['current_volume']
+                self.music_muted = data['music_muted']
+
+            logger.info('Settings loaded from ' + CONFIGPATH)
+        except:
+            # TODO: Create function to reset settings to their default values and use it here
+            # If no config file exists, or the file fails to load, use default settings
+            self.log_level = 3
+            self.window_width = 900
+            self.window_height = 900
+            self.current_volume = 0.3
+            self.music_muted = False
+
+            logger.warn('No config file found. Loaded default settings.')
+            self.save_config()
+
+
+settings = Settings()
+
+logger.info('Settings loaded successfully.')

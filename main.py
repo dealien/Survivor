@@ -16,12 +16,9 @@ for i in sys.argv:
         logger.debug(f"SDL_VIDEODRIVER = {os.environ.get('SDL_VIDEODRIVER')}")
 
 
-def render_all(game):
+def render_all():
     """
     Updates the display output, drawing all tiles, objects, and the player.
-
-    :param game: the main game object
-
     """
     render_start = time.perf_counter()
     game.camera.update(game.player)
@@ -37,7 +34,7 @@ def render_all(game):
                 # Draw object from the perspective of the camera
                 game.surface.blit(game.map.objectmap[a][b].image, game.camera.apply((x, y)))
     game.surface.blit(game.player.image, game.camera.apply(game.player))  # Draw the player
-    if debug_overlay_enabled:
+    if settings.debug_overlay_enabled:
         draw_debug_overlay(game)
     pygame.display.update()
     render_end = time.perf_counter()
@@ -58,8 +55,6 @@ if testrun:
     timeout = time.time() + 10
     render_times = []
 
-debug_overlay_enabled = True
-
 # Main game loop. Detect keyboard input for character movements, etc.
 # Controls:
 # - Escape to quit
@@ -67,6 +62,8 @@ debug_overlay_enabled = True
 #   - Hold shift while pressing a movement key to turn in place
 # - E, Z, or numpad 5 to interact
 # - Backslash to toggle debug overlay
+# - M to toggle mute
+
 while game.running:
     if testrun and time.time() > timeout:
         t = sum(render_times) / len(render_times)
@@ -112,16 +109,21 @@ while game.running:
 
             # Toggle debug overlay
             if event.key == K_BACKSLASH:
-                debug_overlay_enabled = not debug_overlay_enabled
+                settings.debug_overlay_enabled = not settings.debug_overlay_enabled
+
+            if event.key == K_m:
+                if not settings.music_muted:
+                    pygame.mixer.music.set_volume(0)
+                    logger.debug('Music muted')
+                else:
+                    pygame.mixer.music.set_volume(settings.current_volume)
+                    logger.debug('Music unmuted')
+                settings.music_muted = not settings.music_muted
 
         # When the current song ends, play the next one
         if event.type == SONG_END:
             game.play_next_song()
 
-        # Get debug information from clicked objects
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            get_debug_info_at_pos(game, pygame.mouse.get_pos())
-
-    render_all(game)
+    render_all()
     game.clock.tick(50)
 pygame.quit()

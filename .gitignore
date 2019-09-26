@@ -67,3 +67,4 @@ target/
 logs/
 saves/
 web/
+config.json
