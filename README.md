@@ -29,3 +29,4 @@ I created most of the assets used in this project myself. The rest I got from th
 
 * Music by [HeatleyBros](https://www.youtube.com/channel/UCsLlqLIE-TqDq3lh5kU2PeA). 
 * Fonts downloaded from [Google Fonts](https://fonts.google.com/). 
+* Sounds downloaded from [whatever this is](http://www.utc.fr/si28/ProjetsUpload/P2006_si28p004/flash_puzzle/sons/rush/)
