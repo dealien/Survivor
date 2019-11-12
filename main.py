@@ -110,20 +110,23 @@ while game.running:
             # Toggle debug overlay
             if event.key == K_BACKSLASH:
                 settings.debug_overlay_enabled = not settings.debug_overlay_enabled
+                logger.debug('Debug overlay ' + 'enabled' if settings.debug_overlay_enabled else 'disabled')
 
             if event.key == K_m:
                 if not settings.music_muted:
                     pygame.mixer.music.set_volume(0)
-                    logger.debug('Music muted')
                 else:
                     pygame.mixer.music.set_volume(settings.current_volume)
-                    logger.debug('Music unmuted')
                 settings.music_muted = not settings.music_muted
+                logger.debug('Music ' + 'muted' if settings.music_muted else 'unmuted')
 
         # When the current song ends, play the next one
         if event.type == SONG_END:
+            logger.debug('Song ended')
             game.play_next_song()
 
     render_all()
     game.clock.tick(50)
+
+logger.info('Quitting game...')
 pygame.quit()
