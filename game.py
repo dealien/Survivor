@@ -28,13 +28,14 @@ class Game:
         self.paused = False
         self.running = True
 
-        self.current_volume = 0.3
+        self.current_volume = settings.current_volume
         self.current_song = None
         self.play_next_song()
 
     @property
     def current_volume(self):
         if not pygame.mixer.get_init() is None:
+            settings.current_volume = pygame.mixer.music.get_volume()
             return pygame.mixer.music.get_volume()
         else:
             return 0
