@@ -51,9 +51,10 @@ SONG_END = pygame.USEREVENT + 1
 pygame.mixer.music.set_endevent(SONG_END)
 
 # When the script is run using the "--test-run" argument, test actions used in the main loop, then exit.
+timeout = 0
+render_times = []
 if testrun:
     timeout = time.time() + 10
-    render_times = []
 
 # Main game loop. Detect keyboard input for character movements, etc.
 # Controls:
